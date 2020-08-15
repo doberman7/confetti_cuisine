@@ -5,7 +5,13 @@ const express = require("express"),
   homeController = require("./controllers/homeController.js"),
   errorController = require("./controllers/errorController.js"),
   layouts = require("express-ejs-layouts"),
+  mongoose = require("mongoose"),
   chalkAnimation = require('chalk-Animation');
+
+mongoose.connect(
+  "mongodb://localhost:27017/recipe_db",
+  {useNewUrlParser: true}
+),
 
 app.use(express.static ("public"));
 //set port to the environment variable..
