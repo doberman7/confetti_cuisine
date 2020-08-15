@@ -6,12 +6,44 @@ const express = require("express"),
   errorController = require("./controllers/errorController.js"),
   layouts = require("express-ejs-layouts"),
   mongoose = require("mongoose"),
+  db = mongoose.connection,
+  subscriberSchema = mongoose.Schema({
+    name: String,
+    email: String,
+    zipCode: Number
+  }),
+  Subscriber = mongoose.model("Subscriber", subscriberSchema),
   chalkAnimation = require('chalk-Animation');
+
+var subscriber1 = new Subscriber({
+  name: "Jon Wexler",
+  email: "jon@jonwexler.com"
+});
+
+subscriber1.save((error, savedDocument) => {
+  if (error) console.log(error);
+  console.log(savedDocument);
+});
+
+Subscriber.create(
+  {
+    name: "Jon Wexler",
+    email: "jon@jonwexler.com"
+  },
+  function (error, savedDocument) {
+    if (error) console.log(error);
+    console.log(savedDocument);
+  }
+);
 
 mongoose.connect(
   "mongodb://localhost:27017/recipe_db",
   {useNewUrlParser: true}
 ),
+
+db.once("open", () => {
+  chalkAnimation.rainbow("Successfully connected to MongoDB using Mongoose!");
+});
 
 app.use(express.static ("public"));
 //set port to the environment variable..
