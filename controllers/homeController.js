@@ -25,6 +25,6 @@ var courses = [
 
 exports.showCourses = (req, res) => {
   res.render("courses", {
-    offeredCourses: courses              
+    offeredCourses: courses
   });
 };

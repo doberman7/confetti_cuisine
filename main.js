@@ -10,15 +10,15 @@ const express = require("express"),
   mongoose = require("mongoose"),
   chalkAnimation = require('chalk-Animation');
 
-  mongoose.connect(//“assign the database connection to the db variable
-    "mongodb://localhost:27017/recipe_db",
-    {useNewUrlParser: true}
-  );
+mongoose.connect(//“assign the database connection
+  "mongodb://localhost:27017/recipe_db",
+  {useNewUrlParser: true}
+);
 
 app.get("/subscribers", subscribersController.getAllSubscribers,
  (req, res, next) => {
-  console.log(req.data);
-  res.send(req.data);
+  //console.log(req.data);
+  res.render("subscribers", {subscribers: req.data})
 });
 
 app.use(express.static ("public"));//“To enable static assets
@@ -42,6 +42,8 @@ app.use(express.json());
 app.get("/courses", homeController.showCourses);
 app.get("/contact", homeController.showSignUp);
 app.post("/contact", homeController.postedSignUpForm);
+
+
 app.use(errorController.pageNotFoundError);
 app.use(errorController.internalServerError);
 

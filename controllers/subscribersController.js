@@ -1,4 +1,5 @@
-const Subscriber = require("../models/subscriber");     
+const Subscriber = require("../models/subscriber");
+  mongoose = require("mongoose");
 
 exports.getAllSubscribers = (req, res, next) => {
   Subscriber.find( {}, (error, subscribers) => {
@@ -7,3 +8,6 @@ exports.getAllSubscribers = (req, res, next) => {
     next();
   });
 };
+
+// app.get("/contact", subscribersController.getSubscriptionPage);
+// app.post("/subscribe", subscribersController.saveSubscriber);
