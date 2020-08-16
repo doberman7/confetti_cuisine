@@ -5,51 +5,25 @@ const express = require("express"),
   homeController = require("./controllers/homeController.js"),
   errorController = require("./controllers/errorController.js"),
   layouts = require("express-ejs-layouts"),
+  Subscriber = require("./models/subscriber"),
+  subscribersController = require("./controllers/subscribersController"),
   mongoose = require("mongoose"),
-  db = mongoose.connection,
-  subscriberSchema = mongoose.Schema({
-    name: String,
-    email: String,
-    zipCode: Number
-  }),
-  Subscriber = mongoose.model("Subscriber", subscriberSchema),
   chalkAnimation = require('chalk-Animation');
 
-var subscriber1 = new Subscriber({
-  name: "Jon Wexler",
-  email: "jon@jonwexler.com"
+  mongoose.connect(//“assign the database connection to the db variable
+    "mongodb://localhost:27017/recipe_db",
+    {useNewUrlParser: true}
+  );
+
+app.get("/subscribers", subscribersController.getAllSubscribers,
+ (req, res, next) => {
+  console.log(req.data);
+  res.send(req.data);
 });
 
-subscriber1.save((error, savedDocument) => {
-  if (error) console.log(error);
-  console.log(savedDocument);
-});
+app.use(express.static ("public"));//“To enable static assets
 
-Subscriber.create(
-  {
-    name: "Jon Wexler",
-    email: "jon@jonwexler.com"
-  },
-  function (error, savedDocument) {
-    if (error) console.log(error);
-    console.log(savedDocument);
-  }
-);
-
-mongoose.connect(
-  "mongodb://localhost:27017/recipe_db",
-  {useNewUrlParser: true}
-),
-
-db.once("open", () => {
-  chalkAnimation.rainbow("Successfully connected to MongoDB using Mongoose!");
-});
-
-app.use(express.static ("public"));
-//set port to the environment variable..
-//..PORT value or 3000 if the former value is undefined
 app.set("port", process.env.PORT || 3000);
-//use engine ejs and layout
 app.set("view engine", "ejs");
 app.use(layouts);
 
@@ -73,7 +47,7 @@ app.use(errorController.internalServerError);
 
 app.listen(app.get("port"), () => {
   chalkAnimation.rainbow(
-    `Server running at http://localhost:${app.get(
+    `----------------------------Server running at http://localhost:${app.get(
       "port"
     )}`
   );
