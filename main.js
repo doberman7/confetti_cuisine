@@ -1,5 +1,3 @@
-"use strict";
-
 const express = require("express"),
   app = express(),
   homeController = require("./controllers/homeController.js"),
@@ -8,22 +6,27 @@ const express = require("express"),
   Subscriber = require("./models/subscriber"),
   subscribersController = require("./controllers/subscribersController"),
   mongoose = require("mongoose"),
-  chalkAnimation = require('chalk-Animation');
+  chalk = require('chalk'),
+  chalkAnimation = require('chalk-animation');
+
+
+
+mongoose.Promise = global.Promise;
 
 mongoose.connect(//“assign the database connection
-  "mongodb://localhost:27017/recipe_db",
-  {useNewUrlParser: true}
+  "mongodb://localhost:27017/recipe_db",//Set up the database connection
+  {useNewUrlParser: true,
+    useUnifiedTopology: true,//this and next line solves 2 warnings, that affects chalk animation
+    useCreateIndex: true,
+  },
 );
 
-app.get("/subscribers", subscribersController.getAllSubscribers,
- (req, res, next) => {
-  //console.log(req.data);
-  res.render("subscribers", {subscribers: req.data})
-});
+app.get("/subscribers", subscribersController.getAllSubscribers);
 
 app.use(express.static ("public"));//“To enable static assets
 
 app.set("port", process.env.PORT || 3000);
+
 app.set("view engine", "ejs");
 app.use(layouts);
 
@@ -40,8 +43,12 @@ app.use(
 app.use(express.json());
 
 app.get("/courses", homeController.showCourses);
-app.get("/contact", homeController.showSignUp);
+//app.get("/contact", homeController.showSignUp);
 app.post("/contact", homeController.postedSignUpForm);
+
+
+app.get("/contact", subscribersController.getSubscriptionPage);
+app.post("/subscribe", subscribersController.saveSubscriber);
 
 
 app.use(errorController.pageNotFoundError);

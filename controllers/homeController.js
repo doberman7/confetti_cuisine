@@ -22,9 +22,9 @@ var courses = [
     cost: 10
   }
 ];
-
-exports.showCourses = (req, res) => {
-  res.render("courses", {
-    offeredCourses: courses
-  });
-};
+//why
+// exports.showCourses = (req, res) => {
+//   res.render("courses", {
+//     offeredCourses: courses
+//   });
+// };
