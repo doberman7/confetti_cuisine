@@ -1,5 +1,5 @@
-onst mongoose = require("mongoose"),
-  {Schema} = mongoose,
+const mongoose = require("mongoose"),
+  {Schema} = mongoose,//Notice the use of object destructuring for the Mongoose Schema object. {Schema} assigns the Schema object in mongoose to a constant by the same name.
 
   userSchema = new Schema({//Create the user schema
   name: {//Add first and last name properties
@@ -33,3 +33,10 @@ onst mongoose = require("mongoose"),
 }, {
   timestamps: true//Add a timestamps property to record createdAt and updatedAt dates
 });
+
+userSchema.virtual("fullName")
+  .get(function() {
+    return `${this.name.first} ${this.name.last}`;
+  });//Add a virtual attribute to get the user’s full name
+
+module.exports = mongoose.model("User", userSchema);
