@@ -1,16 +1,18 @@
-const User = require("../models/user");//Require the user model
+const User = require("../models/user");
 
 module.exports = {
-  index: (req, res) => {
-    User.find({})
-      .then(users => {//Render the index page with an array of users
-          res.render("users/index", {
-            users: users
-          })
+  index: (req, res, next) => {
+    User.find() //Run query in index action only.
+      .then(users => {
+        res.locals.users = users;//Store the user data on the response and call the next middleware function
+          next();
       })
-      .catch(error => {//Log error messages and redirect to the home page
-          console.log(`Error fetching users: ${error.message}`)
-        res.redirect("/");
+      .catch(error => {
+        console.log(`Error fetching users: ${error.message}`);
+        next(error);//Catch errors, and pass to the next middleware.
       });
+  },
+  indexView: (req, res) => {
+    res.render("users/index");//Render view in separate action.
   }
 };

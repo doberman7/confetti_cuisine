@@ -23,10 +23,12 @@ var courses = [
   }
 ];
 
-module.exports = {//Export object literal with all controller actions
-  showCourses: (req, res) => {
-    res.render("courses", {
-      offeredCourses: courses
-    });
-  }
-};
+
+//this breaks everithing dont knoe why...chinga tu madre libro
+// module.exports = {//Export object literal with all controller actions
+//   showCourses: (req, res) => {
+//     res.render("courses", {
+//       offeredCourses: courses
+//     });
+//   }
+// };

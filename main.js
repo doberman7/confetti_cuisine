@@ -5,6 +5,7 @@ const express = require("express"),
   layouts = require("express-ejs-layouts"),
   Subscriber = require("./models/subscriber"),
   subscribersController = require("./controllers/subscribersController"),
+  usersController = require("./controllers/usersController"),
   mongoose = require("mongoose"),
   chalk = require('chalk'),
   chalkAnimation = require('chalk-animation');
@@ -13,7 +14,7 @@ const express = require("express"),
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect(//“assign the database connection
+mongoose.connect(//assign the database connection
   "mongodb://localhost:27017/recipe_db",//Set up the database connection
   {useNewUrlParser: true,
     useUnifiedTopology: true,//this and next line solves 2 warnings, that affects chalk animation
@@ -21,7 +22,7 @@ mongoose.connect(//“assign the database connection
   },
 );
 
-app.get("/subscribers", subscribersController.getAllSubscribers);
+
 
 app.use(express.static ("public"));//“To enable static assets
 
@@ -40,12 +41,14 @@ app.use(
   })
 );
 
+app.get("/users", usersController.index, usersController.indexView);
+app.get("/subscribers", subscribersController.getAllSubscribers);
+
 app.use(express.json());
 
 app.get("/courses", homeController.showCourses);
-//app.get("/contact", homeController.showSignUp);
+app.get("/contact", homeController.showSignUp);
 app.post("/contact", homeController.postedSignUpForm);
-
 
 app.get("/contact", subscribersController.getSubscriptionPage);
 app.post("/subscribe", subscribersController.saveSubscriber);
