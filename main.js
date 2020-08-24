@@ -40,6 +40,9 @@ app.use(
     extended: false
   })
 );
+//this 2 are from the example code
+app.post("/users/create", usersController.create);
+app.get("/users/new", usersController.new);
 
 app.get("/users", usersController.index, usersController.indexView);
 app.get("/subscribers", subscribersController.getAllSubscribers);
@@ -56,6 +59,11 @@ app.post("/subscribe", subscribersController.saveSubscriber);
 
 app.use(errorController.pageNotFoundError);
 app.use(errorController.internalServerError);
+
+
+
+
+
 
 app.listen(app.get("port"), () => {
   chalkAnimation.rainbow(

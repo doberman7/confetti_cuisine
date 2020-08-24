@@ -39,4 +39,6 @@ userSchema.virtual("fullName")
     return `${this.name.first} ${this.name.last}`;
   });//Add a virtual attribute to get the user’s full name
 
+
+
 module.exports = mongoose.model("User", userSchema);
