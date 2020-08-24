@@ -22,9 +22,11 @@ var courses = [
     cost: 10
   }
 ];
-//why
-// exports.showCourses = (req, res) => {
-//   res.render("courses", {
-//     offeredCourses: courses
-//   });
-// };
+
+module.exports = {//Export object literal with all controller actions
+  showCourses: (req, res) => {
+    res.render("courses", {
+      offeredCourses: courses
+    });
+  }
+};

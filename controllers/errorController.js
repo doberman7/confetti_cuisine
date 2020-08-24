@@ -12,3 +12,10 @@ exports.internalServerError = (error, req, res, next) => {
   res.status(errorCode);
   res.send(`${errorCode} | Sorry, our application is taking a nap!`);
 };
+//we write this
+module.exports = {//Export object literal with all controller actions
+  showError: (req, res) => {
+    res.render("error", {
+    });
+  }
+};
