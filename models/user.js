@@ -1,3 +1,4 @@
+const Subscriber = require("./subscriber");
 const mongoose = require("mongoose"),
   {Schema} = mongoose,//Notice the use of object destructuring for the Mongoose Schema object. {Schema} assigns the Schema object in mongoose to a constant by the same name.
 
@@ -39,6 +40,24 @@ userSchema.virtual("fullName")
     return `${this.name.first} ${this.name.last}`;
   });//Add a virtual attribute to get the user’s full name
 
-
-
 module.exports = mongoose.model("User", userSchema);
+
+userSchema.pre("save", function (next) {//Set up the pre(‘save’) hook
+  let user = this;//Use the function keyword in the callback
+  if (user.subscribedAccount === undefined) {//Add a quick conditional check for existing subscriber connections
+    Subscriber.findOne({
+      email: user.email
+    })//Query for a single subscriber
+      .then(subscriber => {
+        user.subscribedAccount = subscriber;//Connect the user with a subscriber account
+        next();
+      })
+      .catch(error => {
+        console.log(`Error in connecting subscriber:
+ ${error.message}`);
+         next(error);//Pass any errors to the next middleware function.
+      });
+    } else {
+      next();//Call next function if user already has an association
+    }
+});

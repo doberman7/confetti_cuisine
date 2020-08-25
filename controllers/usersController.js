@@ -17,10 +17,10 @@ module.exports = {
   indexView: (req, res) => {
     res.render("users/index");//Render view in separate action.
   },
-  new: (req, res) => {
+  new: (req, res) => {//Add the new action to render a form
     res.render("users/new");
   },
-  create: (req, res, next) => {
+  create: (req, res, next) => {//Add the create action to save the user to the database.
     let userParams = {
       name: {
         first: req.body.first,
@@ -30,7 +30,7 @@ module.exports = {
       password: req.body.password,
       zipCode: req.body.zipCode
     };
-    User.create(userParams)
+    User.create(userParams)//Create users with form parameters
       .then(user => {
         res.locals.redirect = "/users";
         res.locals.user = user;
@@ -41,7 +41,7 @@ module.exports = {
         next(error);
       });
   },
-  redirectView: (req, res, next) => {
+  redirectView: (req, res, next) => {//Render the view in a separate redirectView action
     let redirectPath = res.locals.redirect;
     if (redirectPath) res.redirect(redirectPath);
     else next();

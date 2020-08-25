@@ -38,11 +38,3 @@ exports.saveSubscriber = (req, res) => {// Add an action to save subscribers
       if (error) res.send(error);
     })
 };
-//we supose to wirte this but not sure how
-// module.exports = {
-//   showSubscriber: (req, res) => {
-//     res.render("courses", {
-//       offeredCourses: courses
-//     });
-//   }
-// };

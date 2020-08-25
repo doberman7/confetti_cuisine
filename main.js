@@ -1,6 +1,10 @@
+"use strict";
+
+
 const express = require("express"),
   app = express(),
-  homeController = require("./controllers/homeController.js"),
+  router = express.Router(),
+  homeController = require("./controllers/homeController"),
   errorController = require("./controllers/errorController.js"),
   layouts = require("express-ejs-layouts"),
   Subscriber = require("./models/subscriber"),
@@ -9,8 +13,6 @@ const express = require("express"),
   mongoose = require("mongoose"),
   chalk = require('chalk'),
   chalkAnimation = require('chalk-animation');
-
-
 
 mongoose.Promise = global.Promise;
 
@@ -22,51 +24,46 @@ mongoose.connect(//assign the database connection
   },
 );
 
-
-
-app.use(express.static ("public"));//“To enable static assets
-
 app.set("port", process.env.PORT || 3000);
-
 app.set("view engine", "ejs");
-app.use(layouts);
 
-app.get("/", (req, res) => {
-  res.send("Welcome to Confetti Cuisine!");
-});
-
-app.use(
+router.use(express.static ("public"));//“To enable static assets
+router.use(layouts);
+router.use(
   express.urlencoded({//tell Express.js app to use body-parser for processing URL encoded and JSON parameters
     extended: false
   })
 );
-//this 2 are from the example code
-app.post("/users/create", usersController.create);
-app.get("/users/new", usersController.new);
+app.use(router);
 
-app.get("/users", usersController.index, usersController.indexView);
-app.get("/subscribers", subscribersController.getAllSubscribers);
+router.use(express.json());
 
-app.use(express.json());
+router.get("/", (req, res) => {
+  res.send("Welcome to Confetti Cuisine!");
+});
 
-app.get("/courses", homeController.showCourses);
-app.get("/contact", homeController.showSignUp);
-app.post("/contact", homeController.postedSignUpForm);
+router.get("/users/new", usersController.new);//Handle requests to view the creation form
+router.post("/users/create", usersController.create,
+  usersController.redirectView);//Handle requests to submit data from the creation form, and display a view
 
-app.get("/contact", subscribersController.getSubscriptionPage);
-app.post("/subscribe", subscribersController.saveSubscriber);
+// app.post("/users/create", usersController.create);//from the example code
+//app.get("/users/new", usersController.new);//from the example code
+router.get("/users", usersController.index, usersController.indexView);
 
+router.get("/subscribers", subscribersController.getAllSubscribers);
 
-app.use(errorController.pageNotFoundError);
-app.use(errorController.internalServerError);
+router.get("/courses", homeController.showCourses);
+router.get("/contact", homeController.showSignUp);
+router.post("/contact", homeController.postedSignUpForm);
 
+router.get("/contact", subscribersController.getSubscriptionPage);
+router.post("/subscribe", subscribersController.saveSubscriber);
 
-
-
-
+router.use(errorController.pageNotFoundError);
+router.use(errorController.internalServerError);
 
 app.listen(app.get("port"), () => {
-  chalkAnimation.rainbow(
+  chalkAnimation.rainbow("-".repeat(8)+
     `----------------------------Server running at http://localhost:${app.get(
       "port"
     )}`
