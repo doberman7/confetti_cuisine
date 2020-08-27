@@ -23,7 +23,7 @@ mongoose.connect(//assign the database connection
   },
 );
 
-app.use(router);
+app.use(router);//alow the router prefix. instead of app.
 
 app.set("port", process.env.PORT || 3000);
 app.set("view engine", "ejs");
@@ -44,9 +44,9 @@ router.get("/", (req, res) => {
 });
 
 router.get("/users/:id", usersController.show, usersController.showView);
-router.get("/users/new", usersController.new);//this view doesnt work
+router.get("/users/new", usersController.new);
 router.post("/users/create", usersController.create,
-  usersController.redirectView);//Handle requests to submit data from the creation form, and display a view
+  usersController.redirectView);
 
 router.get("/users", usersController.index, usersController.indexView);
 

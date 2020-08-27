@@ -19,7 +19,7 @@ module.exports = {
     res.render("users/index");//Render view in separate action.
   },
 
-  new: (req, res) => {//Add the new action to render a form
+  new: (req, res) => {//Add the new action to render a form  NOT WORKING
     res.render("users/new");
   },
 
@@ -65,6 +65,7 @@ module.exports = {
             next(error);//
           });
     } else if (userId == "new"){
+      console.log("route new NOT WORKING, harcore apprach")
       res.render("users/new");
       }
   },
