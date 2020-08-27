@@ -1,6 +1,5 @@
 "use strict";
 
-
 const express = require("express"),
   app = express(),
   router = express.Router(),
@@ -24,6 +23,8 @@ mongoose.connect(//assign the database connection
   },
 );
 
+app.use(router);
+
 app.set("port", process.env.PORT || 3000);
 app.set("view engine", "ejs");
 
@@ -34,7 +35,7 @@ router.use(
     extended: false
   })
 );
-app.use(router);
+
 
 router.use(express.json());
 
@@ -42,12 +43,11 @@ router.get("/", (req, res) => {
   res.send("Welcome to Confetti Cuisine!");
 });
 
-router.get("/users/new", usersController.new);//Handle requests to view the creation form
+router.get("/users/:id", usersController.show, usersController.showView);
+router.get("/users/new", usersController.new);//this view doesnt work
 router.post("/users/create", usersController.create,
   usersController.redirectView);//Handle requests to submit data from the creation form, and display a view
 
-// app.post("/users/create", usersController.create);//from the example code
-//app.get("/users/new", usersController.new);//from the example code
 router.get("/users", usersController.index, usersController.indexView);
 
 router.get("/subscribers", subscribersController.getAllSubscribers);
