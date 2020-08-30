@@ -1,6 +1,5 @@
 "use strict";
 
-
 const User = require("../models/user");
 
 module.exports = {
@@ -65,12 +64,66 @@ module.exports = {
             next(error);//
           });
     } else if (userId == "new"){
-      console.log("route new NOT WORKING, harcore apprach")
+      console.log("route new NOT WORKING, harcore approach")
       res.render("users/new");
       }
   },
 
   showView: (req, res) => {
     res.render("users/show");//Render show view
+  },
+
+  edit: (req, res, next) => {//Add the edit action.
+  let userId = req.params.id;
+  User.findById(userId)//Use findById to locate a user in the database by their ID
+      .then(user => {
+        res.render("users/edit", {
+          user: user//?
+        });//Render the user edit page for a specific user in the database
+      })
+      .catch(error => {
+        console.log(`Error fetching user by ID: ${error.message}`);
+        next(error);
+      });
+},
+
+  update: (req, res, next) => {//Add the update action.
+    let userId = req.params.id,
+      userParams = {
+        name: {
+          first: req.body.first,
+          last: req.body.last
+        },
+        email: req.body.email,
+        password: req.body.password,
+        zipCode: req.body.zipCode
+      };//Collect user parameters from reques
+
+    User.findByIdAndUpdate(userId, {
+      $set: userParams
+    })//Use findByIdAndUpdate to locate a user by ID and update the document record in one command.
+        .then(user => {
+          res.locals.redirect = `/users/${userId}`;
+          res.locals.user = user;
+          next();//Add user to response as a local variable, and call the next middleware function
+        })
+        .catch(error => {
+          console.log(`Error updating user by ID: ${error.message}`);
+          next(error);
+        });
+  },
+
+  delete: (req, res, next) => {
+  let userId = req.params.id;
+  mongoose.set('useFindAndModify', false);//this turn off depraction warning
+  User.findByIdAndRemove(userId)
+      .then(() => {
+        res.locals.redirect = "/users";
+        next();
+      })
+      .catch(error => {
+        console.log(`Error deleting user by ID: ${error.message}`);
+        next();
+      });
   }
 };

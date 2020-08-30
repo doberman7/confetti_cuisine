@@ -10,6 +10,7 @@ const express = require("express"),
   subscribersController = require("./controllers/subscribersController"),
   usersController = require("./controllers/usersController"),
   mongoose = require("mongoose"),
+  methodOverride = require("method-override"),//Require the method-override module
   chalk = require('chalk'),
   chalkAnimation = require('chalk-animation');
 
@@ -23,7 +24,11 @@ mongoose.connect(//assign the database connection
   },
 );
 
-app.use(router);//alow the router prefix. instead of app.
+router.use(methodOverride("_method", {//Configure the application router to use methodOverride as middleware
+  methods: ["POST", "GET"]
+}));
+
+app.use(router);//allow the router prefix. instead of app.
 
 app.set("port", process.env.PORT || 3000);
 app.set("view engine", "ejs");
@@ -46,6 +51,10 @@ router.get("/", (req, res) => {
 router.get("/users", usersController.index, usersController.indexView);
 router.get("/users/new", usersController.new);
 router.post("/users/create", usersController.create,usersController.redirectView);
+router.get("/users/:id/edit", usersController.edit);//Add routes to handle viewing.
+router.put("/users/:id/update", usersController.update,
+ usersController.redirectView);//Process data from the edit form, and display the user show page
+router.delete ("/users/:id/delete", usersController.delete, usersController.redirectView)
 
 router.get("/users/:id", usersController.show, usersController.showView);
 
