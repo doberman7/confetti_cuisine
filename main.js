@@ -9,6 +9,7 @@ const express = require("express"),
   Subscriber = require("./models/subscriber"),
   subscribersController = require("./controllers/subscribersController"),
   usersController = require("./controllers/usersController"),
+  coursesController = require("./controllers/coursesController"),
   mongoose = require("mongoose"),
   methodOverride = require("method-override"),//Require the method-override module
   chalk = require('chalk'),
@@ -55,7 +56,6 @@ router.get("/users/:id/edit", usersController.edit);//Add routes to handle viewi
 router.put("/users/:id/update", usersController.update,
  usersController.redirectView);//Process data from the edit form, and display the user show page
 router.delete ("/users/:id/delete", usersController.delete, usersController.redirectView)
-
 router.get("/users/:id", usersController.show, usersController.showView);
 
 router.get("/subscribers", subscribersController.index, subscribersController.indexView);
@@ -65,10 +65,16 @@ router.get("/subscribers/:id/edit", subscribersController.edit);//Add routes to 
 router.put("/subscribers/:id/update", subscribersController.update,
  subscribersController.redirectView);//Process data from the edit form, and display the user show page
 router.delete ("/subscribers/:id/delete", subscribersController.delete, subscribersController.redirectView)
-
 router.get("/subscribers/:id", subscribersController.show, subscribersController.showView);
 
-router.get("/courses", homeController.showCourses);
+router.get("/courses", coursesController.index, coursesController.indexView);
+router.get("/courses/new", coursesController.new);
+router.post("/courses/create", coursesController.create, coursesController.redirectView);
+router.get("/courses/:id/edit", coursesController.edit);
+router.put("/courses/:id/update", coursesController.update, coursesController.redirectView);
+router.get("/courses/:id", coursesController.show, coursesController.showView);
+
+// router.get("/courses", homeController.showCourses);
 
 router.get("/contact", subscribersController.getSubscriptionPage);
 router.post("/subscribe", subscribersController.saveSubscriber);
