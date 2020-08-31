@@ -1,24 +1,125 @@
-const Subscriber = require("../models/subscriber"),
+const Subscriber = require("../models/subscriber");
   mongoose = require("mongoose");
 
 module.exports = {
-  getAllSubscribers: (req, res) => {//Retrieve all subscribers
-    Subscriber.find({})
-      .exec()//Return a promise from the find query
 
-      .then((subscribers) => {//Send saved data to the next then code block.
-        res.render("subscribers", {
-          subscribers: subscribers
-        });//Serve results from the database
-      })
-      .catch((error) => { //Catch errors that are rejected in the promise
-        console.log(error.message);
-        return [];
-      })
-      .then(() => {//End the promise chain with a log message
-        console.log("promise complete");
-      });
-  },
+    index: (req, res, next) => {
+      Subscriber.find() //Run query in index action only.
+        .then(subscribers => {
+          res.locals.subscribers = subscribers;//Store the subscriber data on the response and call the next middleware function
+            next();
+        })
+        .catch(error => {
+          console.log(`Error fetching subscribers: ${error.message}`);
+          next(error);//Catch errors, and pass to the next middleware.
+        });
+    },
+
+    indexView: (req, res) => {
+      res.render("subscribers/index");//Render view in separate action.
+    },
+
+    new: (req, res) => {//Add the new action to render a form  NOT WORKING
+      res.render("subscribers/new");
+    },
+
+    create: (req, res, next) => {//Add the create action to save the subscriber to the database.
+        let subscriberParams = {
+        name: req.body.name,
+        email: req.body.email,
+        zipCode: req.body.zipCode
+      };
+      Subscriber.create(subscriberParams)//Create subscribers with form parameters
+        .then(subscriber => {
+          res.locals.redirect = "/subscribers";
+          res.locals.subscriber = subscriber;
+          next();
+        })
+        .catch(error => {
+          console.log(`Error saving subscriber: ${error.message}`);
+          next(error);
+        });
+    },
+
+    redirectView: (req, res, next) => {//Render the view in a separate redirectView action
+      let redirectPath = res.locals.redirect;
+      if (redirectPath) res.redirect(redirectPath);
+      else next();
+    },
+
+    show: (req, res, next) => {
+      let subscriberId = req.params.id;//Collect the subscriber ID from the request params
+      let isAnID = mongoose.Types.ObjectId.isValid(subscriberId);//THIS FIX in case no valid ID
+      if (isAnID){
+        Subscriber.findById(subscriberId)//Find a subscriber by its ID.
+            .then(subscriber => {
+              res.locals.subscriber = subscriber;//Pass the subscriber through the response object to the next middleware function.
+                next();
+            })
+            .catch(error => {
+              console.log(`Error fetching subscriber by ID: ${error.message}`);
+              next(error);//
+            });
+      } else if (subscriberId == "new"){
+        console.log("route new NOT WORKING, harcore approach")
+        res.render("subscribers/new");
+        }
+    },
+
+    showView: (req, res) => {
+      res.render("subscribers/show");//Render show view
+    },
+
+    edit: (req, res, next) => {//Add the edit action.
+    let subscriberId = req.params.id;
+    Subscriber.findById(subscriberId)//Use findById to locate a subscriber in the database by their ID
+        .then(subscriber => {
+          res.render("subscribers/edit", {
+            subscriber: subscriber//?
+          });//Render the subscriber edit page for a specific subscriber in the database
+        })
+        .catch(error => {
+          console.log(`Error fetching subscriber by ID: ${error.message}`);
+          next(error);
+        });
+    },
+
+    update: (req, res, next) => {//Add the update action.
+      let subscriberId = req.params.id,
+        subscriberParams = {
+          name: req.body.name,
+          email: req.body.email,
+          password: req.body.password,
+          zipCode: req.body.zipCode
+        };//Collect subscriber parameters from reques
+
+      Subscriber.findByIdAndUpdate(subscriberId, {
+        $set: subscriberParams
+      })//Use findByIdAndUpdate to locate a subscriber by ID and update the document record in one command.
+          .then(subscriber => {
+            res.locals.redirect = `/subscribers/${subscriberId}`;
+            res.locals.subscriber = subscriber;
+            next();//Add subscriber to response as a local variable, and call the next middleware function
+          })
+          .catch(error => {
+            console.log(`Error updating subscriber by ID: ${error.message}`);
+            next(error);
+          });
+    },
+
+    delete: (req, res, next) => {
+    let subscriberId = req.params.id;
+    mongoose.set('useFindAndModify', false);//this turn off depraction warning
+    Subscriber.findByIdAndRemove(subscriberId)
+        .then(() => {
+          res.locals.redirect = "/subscribers";
+          next();
+        })
+        .catch(error => {
+          console.log(`Error deleting subscriber by ID: ${error.message}`);
+          next();
+        });
+    },
 
   getSubscriptionPage: (req, res) => {//Add an action to render the contact page
     res.render("contact");

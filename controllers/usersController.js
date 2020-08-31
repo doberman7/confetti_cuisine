@@ -1,6 +1,7 @@
 "use strict";
 
-const User = require("../models/user");
+const User = require("../models/user"),
+  mongoose = require("mongoose");
 
 module.exports = {
   index: (req, res, next) => {
@@ -85,7 +86,7 @@ module.exports = {
         console.log(`Error fetching user by ID: ${error.message}`);
         next(error);
       });
-},
+  },
 
   update: (req, res, next) => {//Add the update action.
     let userId = req.params.id,

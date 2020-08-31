@@ -58,11 +58,17 @@ router.delete ("/users/:id/delete", usersController.delete, usersController.redi
 
 router.get("/users/:id", usersController.show, usersController.showView);
 
-router.get("/subscribers", subscribersController.getAllSubscribers);
+router.get("/subscribers", subscribersController.index, subscribersController.indexView);
+router.get("/subscribers/new", subscribersController.new);
+router.post("/subscribers/create", subscribersController.create,subscribersController.redirectView);
+router.get("/subscribers/:id/edit", subscribersController.edit);//Add routes to handle viewing.
+router.put("/subscribers/:id/update", subscribersController.update,
+ subscribersController.redirectView);//Process data from the edit form, and display the user show page
+router.delete ("/subscribers/:id/delete", subscribersController.delete, subscribersController.redirectView)
+
+router.get("/subscribers/:id", subscribersController.show, subscribersController.showView);
 
 router.get("/courses", homeController.showCourses);
-router.get("/contact", homeController.showSignUp);
-router.post("/contact", homeController.postedSignUpForm);
 
 router.get("/contact", subscribersController.getSubscriptionPage);
 router.post("/subscribe", subscribersController.saveSubscriber);
@@ -71,8 +77,8 @@ router.use(errorController.pageNotFoundError);
 router.use(errorController.internalServerError);
 
 app.listen(app.get("port"), () => {
-  chalkAnimation.rainbow("-".repeat(8)+
-    `----------------------------Server running at http://localhost:${app.get(
+  chalkAnimation.rainbow("-".repeat(80)+
+    `Server running at http://localhost:${app.get(
       "port"
     )}`
   );
