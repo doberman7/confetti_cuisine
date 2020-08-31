@@ -16,8 +16,12 @@ const subscriberSchema = new mongoose.Schema({
     min: [10000, "Zip code too short"],
     max: 99999
   },
-  courses: [{type: mongoose.Schema.Types.ObjectId, ref: "Course"}]
-});
+  courses: [{type: mongoose.Schema.Types.ObjectId, ref: "Course"}]//Associate multiple courses
+},
+  {
+    timestamps: true//Add a timestamps property to record createdAt and updatedAt dates
+  }
+);
 
 
 subscriberSchema.methods.getInfo = function() {//Add an instance method to get the full name of a subscriber
@@ -25,10 +29,10 @@ subscriberSchema.methods.getInfo = function() {//Add an instance method to get t
   ${this.zipCode}`;
 };
 
-subscriberSchema.methods.findLocalSubscribers = function() {
-  return this.model("Subscriber")
-    .find({zipCode: this.zipCode})
-    .exec();//Access the Subscriber model to use the find method.
-};
+// subscriberSchema.methods.findLocalSubscribers = function() {
+//   return this.model("Subscriber")
+//     .find({zipCode: this.zipCode})
+//     .exec();//Access the Subscriber model to use the find method.
+// };
 
 module.exports = mongoose.model("Subscriber", subscriberSchema);//Export the model

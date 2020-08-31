@@ -1,5 +1,5 @@
-const Subscriber = require("./subscriber");
-const mongoose = require("mongoose"),
+const Subscriber = require("./subscriber"),
+  mongoose = require("mongoose"),
   {Schema} = mongoose,//Notice the use of object destructuring for the Mongoose Schema object. {Schema} assigns the Schema object in mongoose to a constant by the same name.
 
   userSchema = new Schema({//Create the user schema
@@ -28,10 +28,17 @@ const mongoose = require("mongoose"),
     type: String,
     required: true
   },//Add a password property.
-  courses: [{type: Schema.Types.ObjectId, ref: "Course"}],//Add a courses property to connect users to courses.
-  subscribedAccount: {type: Schema.Types.ObjectId, ref:
- "Subscriber"}//Add a subscribedAccount to connect users to subscribers
-}, {
+  courses: [
+    {
+      type: Schema.Types.ObjectId, ref: "Course"
+    }
+  ],//Add a courses property to connect users to courses.
+  subscribedAccount: {
+    type: Schema.Types.ObjectId, ref:
+    "Subscriber"
+  }//Associate users with subscribers.
+},
+{
   timestamps: true//Add a timestamps property to record createdAt and updatedAt dates
 });
 
@@ -40,7 +47,6 @@ userSchema.virtual("fullName")
     return `${this.name.first} ${this.name.last}`;
   });//Add a virtual attribute to get the user’s full name
 
-module.exports = mongoose.model("User", userSchema);
 
 userSchema.pre("save", function (next) {//Set up the pre(‘save’) hook
   let user = this;//Use the function keyword in the callback
@@ -61,3 +67,5 @@ userSchema.pre("save", function (next) {//Set up the pre(‘save’) hook
       next();//Call next function if user already has an association
     }
 });
+
+module.exports = mongoose.model("User", userSchema);
