@@ -1,12 +1,11 @@
-<h2>subscriber Table</h2>
+<h2 class="center">Subscriber Table</h2>
  <table class="table">
    <thead>
      <tr>
        <th>Name</th>
        <th>Email</th>
-       <th>Zip Code</th>
        <th>Edit</th>
-
+       <th>Delete</th>
      </tr>
    </thead>
    <tbody>
@@ -18,7 +17,6 @@
           </a>
         </td>
         <td><%= subscriber.email %></td>
-        <td><%= subscriber.zipCode%></td>
         <td>
           <a href="<%=`/subscribers/${subscriber._id}/edit` %>">
             Edit

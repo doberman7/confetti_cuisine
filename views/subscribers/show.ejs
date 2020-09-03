@@ -3,7 +3,6 @@
 <table class="table">
   <tr>
     <th>Name</th>
-    <p>aqui</p>
     <td><%= subscriber.name %></td>
   </tr>
   <tr>
@@ -36,7 +35,8 @@
   </a>
 </div>
 <div>
-  <%# onclick event doesnt work s %>
 <a href="<%= `/subscribers/${subscriber._id}/delete?_method=DELETE` %>"
   onclick="return confirm('Are you sure you want to delete this record?')">Delete</a>
 </div>
+
+<p>This subscriber has <%= subscriber.courses.length %> associated course(s)</p>

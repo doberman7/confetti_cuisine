@@ -1,4 +1,11 @@
-const Subscriber = require("../models/subscriber");
+const Subscriber = require("../models/subscriber"),
+  getSubscriberParams = (body) => {
+    return {
+      name: body.name,
+      email: body.email,
+      zipCode: parseInt(body.zipCode)
+    };
+  },
   mongoose = require("mongoose");
 
 module.exports = {
@@ -24,11 +31,7 @@ module.exports = {
     },
 
     create: (req, res, next) => {//Add the create action to save the subscriber to the database.
-        let subscriberParams = {
-        name: req.body.name,
-        email: req.body.email,
-        zipCode: req.body.zipCode
-      };
+        let subscriberParams = getSubscriberParams(req.body);
       Subscriber.create(subscriberParams)//Create subscribers with form parameters
         .then(subscriber => {
           res.locals.redirect = "/subscribers";
@@ -85,13 +88,8 @@ module.exports = {
     },
 
     update: (req, res, next) => {//Add the update action.
-      let subscriberId = req.params.id,
-        subscriberParams = {
-          name: req.body.name,
-          email: req.body.email,
-          password: req.body.password,
-          zipCode: req.body.zipCode
-        };//Collect subscriber parameters from reques
+      mongoose.set('useFindAndModify', false);//this turn off depraction warning
+      let subscriberParams = getSubscriberParams(req.body);//Collect subscriber parameters from reques
 
       Subscriber.findByIdAndUpdate(subscriberId, {
         $set: subscriberParams
@@ -119,26 +117,26 @@ module.exports = {
           console.log(`Error deleting subscriber by ID: ${error.message}`);
           next();
         });
-    },
+    }
 
-  getSubscriptionPage: (req, res) => {//Add an action to render the contact page
-    res.render("contact");
-  },
-
-  saveSubscriber: (req, res) => {// Add an action to save subscribers
-    let newSubscriber = new Subscriber({
-      name: req.body.name,
-      email: req.body.email,
-      zipCode: req.body.zipCode
-    });//Create a new subscriber
-
-    newSubscriber.save()
-      .then(result => {//Save a new subscriber with a promise return
-        res.render("thanks");
-      })
-      .catch(error => {
-        if (error) res.send(error);
-      })
-  }
+  // getSubscriptionPage: (req, res) => {//Add an action to render the contact page
+  //   res.render("contact");
+  // },
+  //
+  // saveSubscriber: (req, res) => {// Add an action to save subscribers
+  //   let newSubscriber = new Subscriber({
+  //     name: req.body.name,
+  //     email: req.body.email,
+  //     zipCode: req.body.zipCode
+  //   });//Create a new subscriber
+  //
+  //   newSubscriber.save()
+  //     .then(result => {//Save a new subscriber with a promise return
+  //       res.render("thanks");
+  //     })
+  //     .catch(error => {
+  //       if (error) res.send(error);
+  //     })
+  // }
 
 }

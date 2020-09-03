@@ -89,6 +89,8 @@ module.exports = {
   },
 
   update: (req, res, next) => {//Add the update action.
+    mongoose.set('useFindAndModify', false);//this turn off depraction warning
+    console.log("update")
     let userId = req.params.id,
       userParams = {
         name: {

@@ -15,6 +15,9 @@ const express = require("express"),
   chalk = require('chalk'),
   chalkAnimation = require('chalk-animation');
 
+
+// app.use(methodOverride("_method", {methods: ["POST", "GET"]}))
+
 mongoose.Promise = global.Promise;
 
 mongoose.connect(//assign the database connection
@@ -25,11 +28,8 @@ mongoose.connect(//assign the database connection
   },
 );
 
-router.use(methodOverride("_method", {//Configure the application router to use methodOverride as middleware
-  methods: ["POST", "GET"]
-}));
 
-app.use(router);//allow the router prefix. instead of app.
+// app.use(router);//allow the router prefix. instead of app.
 
 app.set("port", process.env.PORT || 3000);
 app.set("view engine", "ejs");
@@ -42,8 +42,12 @@ router.use(
   })
 );
 
+router.use(methodOverride("_method", {//Configure the application router to use methodOverride as middleware
+  methods: ["POST", "GET", "PUT"]
+}));
 
 router.use(express.json());
+
 
 router.get("/", (req, res) => {
   res.send("Welcome to Confetti Cuisine!");
@@ -53,8 +57,8 @@ router.get("/users", usersController.index, usersController.indexView);
 router.get("/users/new", usersController.new);
 router.post("/users/create", usersController.create,usersController.redirectView);
 router.get("/users/:id/edit", usersController.edit);//Add routes to handle viewing.
-router.put("/users/:id/update", usersController.update,
- usersController.redirectView);//Process data from the edit form, and display the user show page
+router.put("/users/:id/update", usersController.update, usersController.redirectView);
+//Process data from the edit form, and display the user show page
 router.delete ("/users/:id/delete", usersController.delete, usersController.redirectView)
 router.get("/users/:id", usersController.show, usersController.showView);
 
@@ -76,14 +80,17 @@ router.get("/courses/:id", coursesController.show, coursesController.showView);
 
 // router.get("/courses", homeController.showCourses);
 
-router.get("/contact", subscribersController.getSubscriptionPage);
-router.post("/subscribe", subscribersController.saveSubscriber);
+// router.get("/contact", subscribersController.getSubscriptionPage);
+// router.post("/subscribe", subscribersController.saveSubscriber);
 
 router.use(errorController.pageNotFoundError);
 router.use(errorController.internalServerError);
 
+app.use("/", router);
+
+
 app.listen(app.get("port"), () => {
-  chalkAnimation.rainbow("-".repeat(80)+
+  chalkAnimation.rainbow("-".repeat(8)+
     `Server running at http://localhost:${app.get(
       "port"
     )}`
