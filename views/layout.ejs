@@ -15,11 +15,14 @@
 <body>
 	<div class="flashes">
   <% if (flashMessages) { %>
-    <% if (flashMessages.success) { %>
-      <div class="flash success"><%= flashMessages.success %></div>
+    <% if (flashMessages.successUser) { %>
+      <div class="flash success"><%= flashMessages.successUser %></div>
     <% } else if (flashMessages.error) { %>
       <div class="flash error"><%= flashMessages.error %></div>
-    <% } %>
+		<% } else if (flashMessages.success) { %>
+			<div class="flash error"><%= flashMessages.success %></div>
+
+		<% } %>
 
   <% } %>
 </div>
