@@ -23,7 +23,11 @@ module.exports = {
     },
 
     indexView: (req, res) => {
-      res.render("subscribers/index");//Render view in separate action.
+      res.render("subscribers/index",{
+        flashMessages: {
+          success: "Loaded all subscribers!"
+        }
+      });//Render view in separate action.
     },
 
     new: (req, res) => {//Add the new action to render a form  NOT WORKING
@@ -34,13 +38,19 @@ module.exports = {
         let subscriberParams = getSubscriberParams(req.body);
       Subscriber.create(subscriberParams)//Create subscribers with form parameters
         .then(subscriber => {
+          req.flash("success", `${subscriber.name}'s account created successfully!`);//Respond with a success flash message.
           res.locals.redirect = "/subscribers";
           res.locals.subscriber = subscriber;
           next();
         })
         .catch(error => {
           console.log(`Error saving subscriber: ${error.message}`);
-          next(error);
+          res.locals.redirect = "/subscribers/new";
+          req.flash(
+            "error",
+            `Failed to create user account because:  ${error.message}.`
+          );
+          next();
         });
     },
 

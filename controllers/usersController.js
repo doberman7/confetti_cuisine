@@ -27,7 +27,11 @@ module.exports = {
       });
   },
   indexView: (req, res) => {
-    res.render("users/index");//Render view in separate action.
+    res.render("users/index",{
+      flashMessages: {
+        success: "Loaded all users!"
+      }
+    });//Render view in separate action.
   },
 
   new: (req, res) => {//Add the new action to render a form  NOT WORKING
@@ -48,7 +52,7 @@ module.exports = {
             res.locals.redirect = "/users/new";
             req.flash(
               "error",
-              `Failed to create user account because:  ${error.message}.` 
+              `Failed to create user account because:  ${error.message}.`
             );
             next();
           });
