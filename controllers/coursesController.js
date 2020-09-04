@@ -6,8 +6,8 @@ const Course = require("../models/course"),
     return {
       title: body.title,
       description: body.description,
-      items: [body.items.split(",")],
-      zipCode: body.zipCode
+      maxStudents: body.maxStudents,
+      cost: body.cost
     };
   };
 

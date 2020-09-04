@@ -43,7 +43,7 @@ module.exports = {
     let userParams = getUserParams(req.body);
     User.create(userParams)//Create users with form parameters
       .then(user => {
-        req.flash("success", `${user.fullName}'s account created successfully!`);//Respond with a success flash message.
+        req.flash("success-user", `${user.fullName}'s account created successfully!`);//Respond with a success flash message.
         res.locals.redirect = "/users";
         res.locals.user = user;
         next();
