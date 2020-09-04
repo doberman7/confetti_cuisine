@@ -1,9 +1,18 @@
 "use strict";
 
 const Course = require("../models/course"),
-  mongoose = require("mongoose");
+  mongoose = require("mongoose"),
+  getCourseParams = body => {
+    return {
+      title: body.title,
+      description: body.description,
+      items: [body.items.split(",")],
+      zipCode: body.zipCode
+    };
+  };
 
 module.exports = {
+
   index: (req, res, next) => {
     Course.find({})
       .then(courses => {
@@ -15,22 +24,20 @@ module.exports = {
         next(error);
       });
   },
+
   indexView: (req, res) => {
     res.render("courses/index");
   },
+
   new: (req, res) => {
     res.render("courses/new");
   },
 
   create: (req, res, next) => {
-    let courseParams = {
-      title: req.body.title,
-      description: req.body.description,
-      items: [req.body.items.split(",")],
-      zipCode: req.body.zipCode
-    };
+    let courseParams = getCourseParams(req.body);
     Course.create(courseParams)
       .then(course => {
+        req.flash("success", `${course.title} Course created successfully!`);
         res.locals.redirect = "/courses";
         res.locals.course = course;
         next();

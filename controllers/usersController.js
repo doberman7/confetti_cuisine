@@ -26,12 +26,13 @@ module.exports = {
         next(error);//Catch errors, and pass to the next middleware.
       });
   },
+
   indexView: (req, res) => {
     res.render("users/index",{
       flashMessages: {
         success: "Loaded all users!"
       }
-    });//Render view in separate action.
+    });
   },
 
   new: (req, res) => {//Add the new action to render a form  NOT WORKING
