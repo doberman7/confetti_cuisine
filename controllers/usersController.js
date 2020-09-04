@@ -44,14 +44,14 @@ module.exports = {
         next();
       })
       .catch(error => {
-        console.log(`Error saving user: ${error.message}`);
-        res.locals.redirect = "/users/new";
-        req.flash(
-        "error",
-        `Failed to create user account because:  ${error.message}.` //Respond with a failure flash message.
-      );
-        next(error);
-      });
+            console.log(`Error saving user: ${error.message}`);
+            res.locals.redirect = "/users/new";
+            req.flash(
+              "error",
+              `Failed to create user account because:  ${error.message}.` 
+            );
+            next();
+          });
   },
 
   redirectView: (req, res, next) => {//Render the view in a separate redirectView action
