@@ -13,10 +13,28 @@ const express = require("express"),
   mongoose = require("mongoose"),
   methodOverride = require("method-override"),//Require the method-override module
   chalk = require('chalk'),
+    expressSession = require("express-session"),
+    cookieParser = require("cookie-parser"),
+    connectFlash = require("connect-flash"),
   chalkAnimation = require('chalk-animation');
 
 
-// app.use(methodOverride("_method", {methods: ["POST", "GET"]}))
+router.use(cookieParser("secret_passcode"));// Configure your Express.js application to use cookie-parser as middleware
+router.use(expressSession({
+  secret: "secret_passcode",
+  cookie: {
+    maxAge: 4000000
+  },
+  resave: false,//dont sen a cookie to the user if no messages are added to the session by settinig                                                                                                                                                                                                              
+  saveUninitialized: false
+}));//Configure express-session to use cookie-parser.
+router.use(connectFlash());//Configure your application to use connect-flash as middleware
+
+router.use((req, res, next) => {
+  res.locals.flashMessages = req.flash();//Assign flash messages to the local flashMessages variable on the response object.
+  next();
+});
+
 
 mongoose.Promise = global.Promise;
 
@@ -27,9 +45,6 @@ mongoose.connect(//assign the database connection
     useCreateIndex: true,
   },
 );
-
-
-// app.use(router);//allow the router prefix. instead of app.
 
 app.set("port", process.env.PORT || 3000);
 app.set("view engine", "ejs");
@@ -57,8 +72,7 @@ router.get("/users", usersController.index, usersController.indexView);
 router.get("/users/new", usersController.new);
 router.post("/users/create", usersController.create,usersController.redirectView);
 router.get("/users/:id/edit", usersController.edit);//Add routes to handle viewing.
-router.put("/users/:id/update", usersController.update, usersController.redirectView);
-//Process data from the edit form, and display the user show page
+router.put("/users/:id/update", usersController.update, usersController.redirectView);//Process data from the edit form, and display the user show page
 router.delete ("/users/:id/delete", usersController.delete, usersController.redirectView)
 router.get("/users/:id", usersController.show, usersController.showView);
 

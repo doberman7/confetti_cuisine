@@ -1,7 +1,18 @@
 "use strict";
 
 const User = require("../models/user"),
-  mongoose = require("mongoose");
+  mongoose = require("mongoose"),
+  getUserParams = (body) => {
+    return {
+      name: {
+        first: body.first,
+        last: body.last
+      },
+      email: body.email,
+      password: body.password,
+      zipCode: body.zipCode
+    };
+  };
 
 module.exports = {
   index: (req, res, next) => {
@@ -24,23 +35,21 @@ module.exports = {
   },
 
   create: (req, res, next) => {//Add the create action to save the user to the database.
-    let userParams = {
-      name: {
-        first: req.body.first,
-        last: req.body.last
-      },
-      email: req.body.email,
-      password: req.body.password,
-      zipCode: req.body.zipCode
-    };
+    let userParams = getUserParams(req.body);
     User.create(userParams)//Create users with form parameters
       .then(user => {
+        req.flash("success", `${user.fullName}'s account created successfully!`);//Respond with a success flash message.
         res.locals.redirect = "/users";
         res.locals.user = user;
         next();
       })
       .catch(error => {
         console.log(`Error saving user: ${error.message}`);
+        res.locals.redirect = "/users/new";
+        req.flash(
+        "error",
+        `Failed to create user account because:  ${error.message}.` //Respond with a failure flash message.
+      );
         next(error);
       });
   },
