@@ -44,7 +44,12 @@ module.exports = {
       })
       .catch(error => {
         console.log(`Error saving course: ${error.message}`);
-        next(error);
+        res.locals.redirect = "/courses/new";
+        req.flash(
+          "error",
+          `Failed to create user account because:  ${error.message}.`
+        );
+        next();
       });
   },
 
