@@ -12,10 +12,11 @@ const express = require("express"),
   coursesController = require("./controllers/coursesController"),
   mongoose = require("mongoose"),
   methodOverride = require("method-override"),//Require the method-override module
-  chalk = require('chalk'),
     expressSession = require("express-session"),
     cookieParser = require("cookie-parser"),
     connectFlash = require("connect-flash"),
+  bcrypt = require("bcrypt"),//HERE  
+    chalk = require('chalk'),
   chalkAnimation = require('chalk-animation');
 
 
