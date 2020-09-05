@@ -2,6 +2,7 @@
 
 const User = require("../models/user"),
   mongoose = require("mongoose"),
+  chalkAnimation = require('chalk-animation'),
   getUserParams = (body) => {
     return {
       name: {
@@ -142,5 +143,33 @@ module.exports = {
         console.log(`Error deleting user by ID: ${error.message}`);
         next();
       });
+  },
+
+  login: (req, res) => {//Add the login action
+    console.log("sdf"),
+    chalkAnimation.rainbow("aaaa"),
+    res.render("users/login");
+  },
+
+  authenticate: (req, res, next) => {//Add the login action
+    User.findOne({
+      email: req.body.email
+    })//Compare the form password with the database password.
+        .then(user => {
+          if (user && user.password === req.body.password){
+            res.locals.redirect = `/users/${user._id}`;
+            req.flash("success", `${user.fullName}'s logged in successfully!`);
+            res.locals.user = user;
+            next();
+      } else {
+        req.flash("error", "Your account or password is incorrect. Please try again or contact your system administrator!");
+        res.locals.redirect = "/users/login";
+        next();
+      }
+    })
+        .catch(error => {//Log errors to the console, and redirect
+          console.log(`Error logging in user: ${error.message}`);
+          next(error);
+        });
   }
 };

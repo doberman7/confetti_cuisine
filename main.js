@@ -25,7 +25,7 @@ router.use(expressSession({
   cookie: {
     maxAge: 4000000
   },
-  resave: false,//dont sen a cookie to the user if no messages are added to the session by settinig                                                                                                                                                                                                              
+  resave: false,//dont sen a cookie to the user if no messages are added to the session by settinig
   saveUninitialized: false
 }));//Configure express-session to use cookie-parser.
 router.use(connectFlash());//Configure your application to use connect-flash as middleware
@@ -70,10 +70,12 @@ router.get("/", (req, res) => {
 
 router.get("/users", usersController.index, usersController.indexView);
 router.get("/users/new", usersController.new);
+router.get("/users/login",  usersController.login);
+router.post("/users/login",usersController.authenticate,usersController.redirectView);
 router.post("/users/create", usersController.create,usersController.redirectView);
 router.get("/users/:id/edit", usersController.edit);//Add routes to handle viewing.
 router.put("/users/:id/update", usersController.update, usersController.redirectView);//Process data from the edit form, and display the user show page
-router.delete ("/users/:id/delete", usersController.delete, usersController.redirectView)
+router.delete ("/users/:id/delete", usersController.delete, usersController.redirectView);
 router.get("/users/:id", usersController.show, usersController.showView);
 
 router.get("/subscribers", subscribersController.index, subscribersController.indexView);
