@@ -33,6 +33,7 @@ body {
     margin: 0 auto;
     position: relative;
     border-bottom: 2px dashed var(--text-color);
+    /* this add space betwen lines, uncoment after tests been run */
     margin: 4rem auto 1rem;
     transition: 500ms;
   }
@@ -104,7 +105,7 @@ body {
     transform: scale(0.8) translateY(-5rem);
     opacity: 1;
   }
-  
+
 main {
   display: flex;
   align-items: center;
