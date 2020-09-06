@@ -23,6 +23,41 @@ body {
   font-family: "Baloo Bhaina";
   text-transform: uppercase;
 }
+main {
+  display: flex;
+  align-items: center;
+flex-direction: column;
+font-family: sofia-pro, sans-serif;
+text-align: center;
+}
+
+h1 {
+  font-family: gothic-open-shaded, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+label {
+	display: block;
+}
+
+input, button, select, textarea {
+	font-family: inherit;
+	font-size: inherit;
+	padding: 0.4em;
+	margin: 0 0 0.5em 0;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+}
+
+input:disabled {
+	color: #ccc;
+}
+
+input[type="range"] {
+	height: 0;
+}
 
 img {
   width: 100%;
@@ -31,6 +66,24 @@ img {
 a {
   color: #333;
   text-decoration: none;
+}
+
+button {
+	color: #333;
+	background-color: #f4f4f4;
+	outline: none;
+}
+
+button:disabled {
+	color: #999;
+}
+
+button:not(:disabled):active {
+	background-color: #ddd;
+}
+
+button:focus {
+	border-color: #666;
 }
 
 #nav a {
