@@ -1,10 +1,106 @@
-<form action="/users/login" method="POST">            
+<style media="screen">
+
+    form {
+        --text-color: #afafaf;
+    }
+
+  .field {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    border-bottom: 2px dashed var(--text-color);
+    margin: 4rem auto 1rem;
+    transition: 500ms;
+  }
+
+  .label {
+    color:var(--text-color);
+    font-size: 1.2rem;
+  }
+
+  .input {
+    outline: none;
+    border: none;
+    overflow: hidden;
+    margin: 0;
+    width: 100%;
+    padding: 0.25rem 0;
+    background: none;
+    color: white;
+    font-size: 1.2em;
+    font-weight: bold;
+    transition: border 500ms;
+  }
+
+  .input:valid {
+    color: yellowgreen;
+  }
+
+  .input:invalid {
+    color: orangered;
+  }
+
+  /* Border animation */
+
+  .field::after {
+    content: "";
+    position: relative;
+    display: block;
+    height: 4px;
+    width: 100%;
+    background: #d16dff;
+    transform: scaleX(0);
+    transform-origin: 0%;
+    opacity: 0;
+    transition: all 500ms ease;
+    top: 2px;
+  }
+
+  .field:focus-within {
+    border-color: transparent;
+  }
+
+  .field:focus-within::after {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+
+  /* Label animation */
+
+  .label {
+    z-index: -1;
+    position: absolute;
+    transform: translateY(-2rem);
+    transform-origin: 0%;
+    transition: transform 400ms;
+  }
+
+  .field:focus-within .label,
+  .input:not(:placeholder-shown) + .label {
+    transform: scale(0.8) translateY(-5rem);
+    opacity: 1;
+  }
+
+
+
+</style>
+
+<form action="/users/login" method="POST">
+
   <h2>Login:</h2>
-  <label for="inputEmail">Email address</label>
-  <input type="email" name="email" id="inputEmail"
- placeholder="Email address" required>
-  <label for="inputPassword">Password</label>
-  <input type="password" name="password" id="inputPassword"
- placeholder="Password" required>
+
+  <div class="field">
+    <input type="email" name="email" class="input" id="inputEmail" placeholder="" required>
+    <label for="inputEmail" class="label" >Email</label>
+
+  </div>
+
+  <div class="field">
+
+    <input type="password" name="password" class="input" id="inputPassword" placeholder="" required>
+    <label for="inputPassword" class="label" >Password</label>
+
+  </div>
+
   <button type="submit">Login</button>
 </form>
