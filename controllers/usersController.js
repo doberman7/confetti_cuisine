@@ -146,7 +146,7 @@ module.exports = {
   },
 
   login: (req, res) => {//Add the login action
-    chalkAnimation.rainbow("login runs"),
+    // chalkAnimation.rainbow("login runs"),
     res.render("users/login");
   },
 
