@@ -33,8 +33,7 @@ body {
     margin: 0 auto;
     position: relative;
     border-bottom: 2px dashed var(--text-color);
-    /* this add space betwen lines, uncoment after tests been run */
-    margin: 4rem auto 1rem;
+    margin: 4rem auto 1rem;    /* this add space betwen lines, uncoment after tests been run */
     transition: 500ms;
   }
 
