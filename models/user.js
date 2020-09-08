@@ -1,7 +1,7 @@
 const Subscriber = require("./subscriber"),
   mongoose = require("mongoose"),
   {Schema} = mongoose,//Notice the use of object destructuring for the Mongoose Schema object. {Schema} assigns the Schema object in mongoose to a constant by the same name.
-
+  bcrypt = require("bcrypt"),
   userSchema = new Schema({//Create the user schema
   name: {//Add first and last name properties
     first: {
@@ -67,5 +67,23 @@ userSchema.pre("save", function (next) {//Set up the pre(‘save’) hook
       next();//Call next function if user already has an association
     }
 });
+
+userSchema.pre("save", function(next) {//Add a pre hook to the user schema.
+  let user = this;
+
+  bcrypt.hash(user.password, 10).then(hash => {//Hash the user’s password
+    user.password = hash;
+    next();
+  })
+    .catch(error => {
+      console.log(`Error in hashing password: ${error.message}`);
+      next(error);
+    });
+});
+
+userSchema.methods.passwordComparison = function(inputPassword){//Add a function to compare hashed passwords.
+  let user = this;
+  return bcrypt.compare(inputPassword, user.password);//Compare the user password with the stored password
+};
 
 module.exports = mongoose.model("User", userSchema);

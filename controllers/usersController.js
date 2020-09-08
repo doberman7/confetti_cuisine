@@ -150,25 +150,31 @@ module.exports = {
     res.render("users/login");
   },
 
-  authenticate: (req, res, next) => {//Add the login action
-    User.findOne({
-      email: req.body.email
-    })//Compare the form password with the database password.
-        .then(user => {
-          if (user && user.password === req.body.password){
-            res.locals.redirect = `/users/${user._id}`;
-            req.flash("success", `${user.fullName}'s logged in successfully!`);
-            res.locals.user = user;
-            next();
-      } else {
-        req.flash("error", "Your account or password is incorrect. Please try again or contact your system administrator!");
-        res.locals.redirect = "/users/login";
-        next();
-      }
-    })
-        .catch(error => {//Log errors to the console, and redirect
-          console.log(`Error logging in user: ${error.message}`);
-          next(error);
-        });
+  authenticate: (req, res, next) => {
+    User.findOne({email: req.body.email})//Query for one user by email
+      .then(user => {
+        if (user) {//Check whether a user is found
+          user.passwordComparison(req.body.password)//Call the password comparison method on the User model
+              .then(passwordsMatch => {
+                if (passwordsMatch) {//Check whether the passwords match
+                  res.locals.redirect = `/users/${user._id}`;
+                  req.flash("success", `${user.fullName}'s logged in successfully!`);
+                  res.locals.user = user;
+                } else {
+                  req.flash("error", "Failed to log in user account: Incorrect Password.");
+                  res.locals.redirect = "/users/login";
+                }
+                next();//Call the next middleware function with redirect path and flash message set
+              });
+        } else {
+          req.flash("error", "Failed to log in user account: User account not found.");
+          res.locals.redirect = "/users/login";
+          next();
+    }
+  })
+      .catch(error => {//Log errors to console and pass to the next middleware error handler
+        console.log(`Error logging in user: ${error.message}`);
+        next(error);
+      });
   }
 };
