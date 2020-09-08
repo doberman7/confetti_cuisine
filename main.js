@@ -15,7 +15,8 @@ const express = require("express"),
     expressSession = require("express-session"),
     cookieParser = require("cookie-parser"),
     connectFlash = require("connect-flash"),
-  bcrypt = require("bcrypt"),//HERE  
+  bcrypt = require("bcrypt"),
+  expressValidator = require("express-validator"),
     chalk = require('chalk'),
   chalkAnimation = require('chalk-animation');
 
@@ -64,10 +65,9 @@ router.use(methodOverride("_method", {//Configure the application router to use 
 
 router.use(express.json());
 
+router.use(expressValidator());
 
-router.get("/", (req, res) => {
-  res.send("Welcome to Confetti Cuisine!");
-});
+router.get("/", (req, res) => {res.send("Welcome to Confetti Cuisine!");});
 
 router.get("/users", usersController.index, usersController.indexView);
 router.get("/users/new", usersController.new);
