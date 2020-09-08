@@ -176,5 +176,30 @@ module.exports = {
         console.log(`Error logging in user: ${error.message}`);
         next(error);
       });
-  }
+  },
+
+  validate: (req, res, next) => {//Add the validate function
+  req.sanitizeBody("email").normalizeEmail({
+    all_lowercase: true
+  }).trim();//Remove whitespace with the trim method
+  req.check("email", "Email is invalid").isEmail();
+  req.check("zipCode", "Zip code is invalid")
+.notEmpty().isInt().isLength({
+    min: 5,
+    max: 5
+  }).equals(req.body.zipCode);//Validate the zipCode field.
+  req.check("password", "Password cannot be empty").notEmpty();//Validate the password field.
+
+  req.getValidationResult().then((error) => {//Collect the results of previous validations
+    if (!error.isEmpty()) {
+      let messages = error.array().map(e => e.msg);
+      req.skip = true;//Set skip property to true.
+      req.flash("error", messages.join(" and "));//Add error messages as flash messages.
+      res.locals.redirect = "/users/new";//Set redirect path for the new view.
+      next();
+    } else {
+      next();//Call the next middleware function.
+    }
+  });
+}
 };
