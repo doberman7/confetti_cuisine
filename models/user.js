@@ -59,8 +59,7 @@ userSchema.pre("save", function (next) {//Set up the pre(‘save’) hook
         next();
       })
       .catch(error => {
-        console.log(`Error in connecting subscriber:
- ${error.message}`);
+        console.log(`Error in connecting subscriber: ${error.message}`);
          next(error);//Pass any errors to the next middleware function.
       });
     } else {
@@ -83,7 +82,9 @@ userSchema.pre("save", function(next) {//Add a pre hook to the user schema.
 
 userSchema.methods.passwordComparison = function(inputPassword){//Add a function to compare hashed passwords.
   let user = this;
-  return bcrypt.compare(inputPassword, user.password);//Compare the user password with the stored password
+  return bcrypt.compare(inputPassword, user.pañssword);//Compare the user password with the stored password
 };
+
+
 
 module.exports = mongoose.model("User", userSchema);

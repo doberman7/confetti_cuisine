@@ -29,11 +29,7 @@ module.exports = {
   },
 
   indexView: (req, res) => {
-    res.render("users/index",{
-      flashMessages: {
-        success: "Loaded all users!"
-      }
-    });
+    res.render("users/index");
   },
 
   new: (req, res) => {//Add the new action to render a form  NOT WORKING
@@ -166,6 +162,7 @@ module.exports = {
                 }
                 next();//Call the next middleware function with redirect path and flash message set
               });
+
         } else {
           req.flash("error", "Failed to log in user account: User account not found.");
           res.locals.redirect = "/users/login";
