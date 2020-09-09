@@ -160,8 +160,23 @@ module.exports = {
                   req.flash("error", "Failed to log in user account: Incorrect Password.");
                   res.locals.redirect = "/users/login";
                 }
+                console.log("password")
                 next();//Call the next middleware function with redirect path and flash message set
               });
+              // Hash mail sholud be here
+              // user.passwordComparison(req.body.email)//Call the password comparison method on the User model
+              //     .then(emailsMatch => {
+              //       if (emailsMatch) {//Check whether the emails match
+              //         res.locals.redirect = `/users/${user._id}`;
+              //         req.flash("success", `${user.fullName}'s logged in successfully!`);
+              //         res.locals.user = user;
+              //       } else {
+              //         req.flash("error", "Failed to log in user account: Incorrect email.");
+              //         res.locals.redirect = "/users/login";
+              //       }
+              //       next();//Call the next middleware function with redirect path and flash message set
+              //     });
+
 
         } else {
           req.flash("error", "Failed to log in user account: User account not found.");

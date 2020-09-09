@@ -59,14 +59,15 @@ userSchema.pre("save", function (next) {//Set up the pre(‘save’) hook
         next();
       })
       .catch(error => {
-        console.log(`Error in connecting subscriber: ${error.message}`);
+        console.log(`Error in connecting subscriber:
+ ${error.message}`);
          next(error);//Pass any errors to the next middleware function.
       });
     } else {
       next();//Call next function if user already has an association
     }
 });
-
+//Hash User
 userSchema.pre("save", function(next) {//Add a pre hook to the user schema.
   let user = this;
 
@@ -80,11 +81,35 @@ userSchema.pre("save", function(next) {//Add a pre hook to the user schema.
     });
 });
 
-userSchema.methods.passwordComparison = function(inputPassword){//Add a function to compare hashed passwords.
+
+
+
+// Hash Email
+userSchema.pre("save", function(next) {
   let user = this;
-  return bcrypt.compare(inputPassword, user.pañssword);//Compare the user password with the stored password
+
+  bcrypt.hash(user.email, 10).then(hash => {
+    user.email = hash;
+    next();
+  })
+    .catch(error => {
+      console.log(`Error in hashing email: ${error.message}`);
+      next(error);
+    });
+});
+
+
+userSchema.methods.emailComparison = function(inputEmail){//Add a function to compare hashed emails.
+  let user = this;
+  return bcrypt.compare(inputEmail, user.email);//Compare the user email with the stored email
 };
 
+
+
+userSchema.methods.passwordComparison = function(inputPassword){//Add a function to compare hashed passwords.
+  let user = this;
+  return bcrypt.compare(inputPassword, user.password);//Compare the user password with the stored password
+};
 
 
 module.exports = mongoose.model("User", userSchema);
