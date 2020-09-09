@@ -82,7 +82,7 @@ userSchema.pre("save", function(next) {//Add a pre hook to the user schema.
 
 userSchema.methods.passwordComparison = function(inputPassword){//Add a function to compare hashed passwords.
   let user = this;
-  return bcrypt.compare(inputPassword, user.pañssword);//Compare the user password with the stored password
+  return bcrypt.compare(inputPassword, user.password);//Compare the user password with the stored password
 };
 
 
