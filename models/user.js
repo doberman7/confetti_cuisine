@@ -1,3 +1,5 @@
+const passportLocalMongoose = require("passport-local-mongoose");
+
 const Subscriber = require("./subscriber"),
   mongoose = require("mongoose"),
   {Schema} = mongoose,//Notice the use of object destructuring for the Mongoose Schema object. {Schema} assigns the Schema object in mongoose to a constant by the same name.
@@ -24,10 +26,11 @@ const Subscriber = require("./subscriber"),
     min: [1000, "Zip code too short"],
     max: 99999
   },
-  password: {
-    type: String,
-    required: true
-  },//Add a password property.
+  // supposedly thanks to Passport.js we dont need these property
+  // password: {
+  //   type: String,
+  //   required: true
+  // },//Add a password property.
   courses: [
     {
       type: Schema.Types.ObjectId, ref: "Course"
@@ -67,23 +70,29 @@ userSchema.pre("save", function (next) {//Set up the pre(‘save’) hook
     }
 });
 
-userSchema.pre("save", function(next) {//Add a pre hook to the user schema.
-  let user = this;
+userSchema.plugin(passportLocalMongoose, {
+  usernameField: "email"
+});//Apply the passport-local-mongoose module as a plugin to the user schema.
 
-  bcrypt.hash(user.password, 10).then(hash => {//Hash the user’s password
-    user.password = hash;
-    next();
-  })
-    .catch(error => {
-      console.log(`Error in hashing password: ${error.message}`);
-      next(error);
-    });
-});
 
-userSchema.methods.passwordComparison = function(inputPassword){//Add a function to compare hashed passwords.
-  let user = this;
-  return bcrypt.compare(inputPassword, user.password);//Compare the user password with the stored password
-};
+
+// userSchema.pre("save", function(next) {//Add a pre hook to the user schema.
+//   let user = this;
+//
+//   bcrypt.hash(user.password, 10).then(hash => {//Hash the user’s password
+//     user.password = hash;
+//     next();
+//   })
+//     .catch(error => {
+//       console.log(`Error in hashing password: ${error.message}`);
+//       next(error);
+//     });
+// });
+
+// userSchema.methods.passwordComparison = function(inputPassword){//Add a function to compare hashed passwords.
+//   let user = this;
+//   return bcrypt.compare(inputPassword, user.password);//Compare the user password with the stored password
+// };
 
 
 

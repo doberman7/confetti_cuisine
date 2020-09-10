@@ -36,24 +36,24 @@ module.exports = {
     res.render("users/new");
   },
 
-  create: (req, res, next) => {//Add the create action to save the user to the database.
-    let userParams = getUserParams(req.body);
-    User.create(userParams)//Create users with form parameters
-      .then(user => {
-        req.flash("successUser", `${user.fullName}'s account created successfully!`);//Respond with a success flash message.
-        res.locals.redirect = "/users";
-        res.locals.user = user;
-        next();
-      })
-      .catch(error => {
-            console.log(`Error saving user: ${error.message}`);
-            res.locals.redirect = "/users/new";
-            req.flash(
-              "error",
-              `Failed to create user account because:  ${error.message}.`
-            );
-            next();
-          });
+  create: (req, res, next) => {
+    if (req.skip) next();
+
+    let newUser = new User( getUserParams(req.body) );
+
+    User.register(newUser, req.body.password, (error, user) => {
+      if (user) {
+        req.flash("success", `${user.fullName}'s account created
+     successfully!`);
+          res.locals.redirect = "/users";
+          next();
+        } else {
+          req.flash("error", `Failed to create user account because:
+     ${error.message}.`);
+          res.locals.redirect = "/users/new";
+          next();
+        }
+      });
   },
 
   redirectView: (req, res, next) => {//Render the view in a separate redirectView action
@@ -176,27 +176,27 @@ module.exports = {
   },
 
   validate: (req, res, next) => {//Add the validate function
-  req.sanitizeBody("email").normalizeEmail({
-    all_lowercase: true
-  }).trim();//Remove whitespace with the trim method
-  req.check("email", "Email is invalid").isEmail();
-  req.check("zipCode", "Zip code is invalid")
-.notEmpty().isInt().isLength({
-    min: 5,
-    max: 5
-  }).equals(req.body.zipCode);//Validate the zipCode field.
-  req.check("password", "Password cannot be empty").notEmpty();//Validate the password field.
+    req.sanitizeBody("email").normalizeEmail({
+      all_lowercase: true
+    }).trim();//Remove whitespace with the trim method
+    req.check("email", "Email is invalid").isEmail();
+    req.check("zipCode", "Zip code is invalid")
+        .notEmpty().isInt().isLength({
+        min: 5,
+        max: 5
+    }).equals(req.body.zipCode);//Validate the zipCode field.
+    req.check("password", "Password cannot be empty").notEmpty();//Validate the password field.
 
-  req.getValidationResult().then((error) => {//Collect the results of previous validations
-    if (!error.isEmpty()) {
-      let messages = error.array().map(e => e.msg);
-      req.skip = true;//Set skip property to true.
-      req.flash("error", messages.join(" and "));//Add error messages as flash messages.
-      res.locals.redirect = "/users/new";//Set redirect path for the new view.
-      next();
-    } else {
-      next();//Call the next middleware function.
-    }
-  });
-}
+    req.getValidationResult().then((error) => {//Collect the results of previous validations
+      if (!error.isEmpty()) {
+        let messages = error.array().map(e => e.msg);
+        req.skip = true;//Set skip property to true.
+        req.flash("error", messages.join(" and "));//Add error messages as flash messages.
+        res.locals.redirect = "/users/new";//Set redirect path for the new view.
+        next();
+      } else {
+        next();//Call the next middleware function.
+      }
+    });
+  },
 };

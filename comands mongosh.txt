@@ -1,0 +1,13 @@
+show dbs
+
+use recipe_db
+
+db.users.find({}, { password: 1})
+
+db.contacts .find({_id: ObjectId("5941fce5cda203f026856a5d")})
+
+show collections	                                                  Displays all the collections in your database. Later, these collections should match your models.
+db.contacts.findOne	                                              Returns a single item from your database at random or a single item matching the criteria passed in as a parameter, which could look like findOne({name: ‘Jon’}).
+db.contacts.update({name: “Jon”}, {name: “Jon Wexler”})	         Updates any matching documents with the second parameter’s property values.
+db.contacts.delete({name: “Jon Wexler”})	                         Removes any matching documents in the collection.
+db.contacts.deleteMany({})	                                       Removes all the documents in that collection. These commands can’t be undone.
