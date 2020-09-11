@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html>
 
 <head>
@@ -8,24 +7,10 @@
 	<title>Recipe App</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 	<link rel="shortcut icon" type="image/png" href="/images/icon.png" />
-	<%# <link rel="stylesheet" href="/css/bootstrap.css"> %>
 	<link rel="stylesheet" href="/css/recipe_app.css">
 </head>
 
 <body>
-	<div class="flashes">
-  <% if (flashMessages) { %>
-    <% if (flashMessages.successUser) { %>
-      <div class="flash success"><%= flashMessages.successUser %></div>
-    <% } else if (flashMessages.error) { %>
-      <div class="flash error"><%= flashMessages.error %></div>
-		<% } else if (flashMessages.success) { %>
-			<div class="flash error"><%= flashMessages.success %></div>
-
-		<% } %>
-
-  <% } %>
-</div>
 	<div id="nav">
 		<div class="col-sm nav-align">
 			<h1 id="title">Recipe App</h1>
@@ -37,19 +22,44 @@
 			<a href="/courses">
 				<span class="button">Cooking Courses</span>
 			</a>
-			<a href="/subscribers/new">
+			<a href="/contact">
 				<span class="button">Contact</span>
 			</a>
-      <a href="/users">
-        <span class="button">User</span>
-      </a>
 		</div>
+		<div class="login-status">
+			<% if (loggedIn) { %>
+			<div class="bubble logged-in">
+				Logged in as <a href="<%=`/users/${currentUser._id}`%>">
+					<%= currentUser.fullName %></a>
+			</div>
+			<div class="log-out">
+				<a href="/users/logout">Log out</a>
+			</div>
+			<%} else {%>
+			<div class="bubble log-in">
+				<a href="/users/login">Log In</a>
+			</div>
+			<% } %>
+		</div>
+	</div>
+
+	<div class="flashes">
+		<% if (flashMessages) { %>
+		<% if (flashMessages.success) { %>
+		<div class="flash success">
+			<%= flashMessages.success %>
+		</div>
+		<% } else if (flashMessages.error) { %>
+		<div class="flash error">
+			<%= flashMessages.error %>
+		</div>
+		<% } %>
+		<% } %>
 	</div>
 
 	<div class="container">
 		<%- body %>
 	</div>
-
 </body>
 
 </html>

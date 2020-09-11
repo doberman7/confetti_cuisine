@@ -19,7 +19,6 @@ const express = require("express"),
   expressValidator = require("express-validator"),
   passport = require('passport'),
   User = require("./models/user"),
-  // passportLocalMongoose = require("passport-local-mongoose"),
   chalk = require('chalk'),
   chalkAnimation = require('chalk-animation');
 
@@ -37,6 +36,8 @@ router.use(connectFlash());//Configure your application to use connect-flash as 
 
 router.use((req, res, next) => {
   res.locals.flashMessages = req.flash();//Assign flash messages to the local flashMessages variable on the response object.
+  res.locals.loggedIn = req.isAuthenticated();
+  res.locals.currentUser = req.user;
   next();
 });
 
@@ -61,10 +62,6 @@ router.use(passport.session());//Configure passport to use sessions in Express.j
 passport.use(User.createStrategy());//Configure the user’s login strategy.
 passport.serializeUser(User.serializeUser()),//Set up passport to serialize and deserialize your user data.
 passport.deserializeUser(User.deserializeUser())
-
-
-
-
 
 router.use(express.static ("public"));//“To enable static assets
 router.use(layouts);
