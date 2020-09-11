@@ -45,6 +45,12 @@ const Subscriber = require("./subscriber"),
   timestamps: true//Add a timestamps property to record createdAt and updatedAt dates
 });
 
+
+userSchema.plugin(passportLocalMongoose, {
+  usernameField: "email"
+});//Apply the passport-local-mongoose module as a plugin to the user schema.
+
+
 userSchema.virtual("fullName")
   .get(function() {
     return `${this.name.first} ${this.name.last}`;
@@ -69,10 +75,6 @@ userSchema.pre("save", function (next) {//Set up the pre(‘save’) hook
       next();//Call next function if user already has an association
     }
 });
-
-userSchema.plugin(passportLocalMongoose, {
-  usernameField: "email"
-});//Apply the passport-local-mongoose module as a plugin to the user schema.
 
 
 

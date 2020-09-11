@@ -19,6 +19,7 @@ const express = require("express"),
   expressValidator = require("express-validator"),
   passport = require('passport'),
   User = require("./models/user"),
+  // passportLocalMongoose = require("passport-local-mongoose"),
   chalk = require('chalk'),
   chalkAnimation = require('chalk-animation');
 
@@ -58,8 +59,8 @@ router.use(passport.initialize());//Initialize passport.
 router.use(passport.session());//Configure passport to use sessions in Express.js.
 
 passport.use(User.createStrategy());//Configure the user’s login strategy.
-passport.serializeUser(User.serializeUser());//Set up passport to serialize and deserialize your user data.
-passport.deserializeUser(User.deserializeUser());
+passport.serializeUser(User.serializeUser()),//Set up passport to serialize and deserialize your user data.
+passport.deserializeUser(User.deserializeUser())
 
 
 
