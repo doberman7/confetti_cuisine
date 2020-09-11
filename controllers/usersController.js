@@ -178,4 +178,11 @@ module.exports = {
       }
     });
   },
+
+  logout: (req, res, next) => {
+    req.logout();//logout its a method provided for passport clears the user’s session
+    req.flash("success", "You have been logged out!");
+    res.locals.redirect = "/";
+    next();
+  }
 };

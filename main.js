@@ -85,7 +85,7 @@ router.get("/users", usersController.index, usersController.indexView);
 router.get("/users/new", usersController.new);
 router.get("/users/login",  usersController.login);
 router.post("/users/login",usersController.authenticate);
-// router.post("/users/create", usersController.create,usersController.redirectView);
+router.get("/users/logout", usersController.logout, usersController.redirectView);
 router.post("/users/create", usersController.validate, usersController.create, usersController.redirectView);
 router.get("/users/:id/edit", usersController.edit);//Add routes to handle viewing.
 router.put("/users/:id/update", usersController.update, usersController.redirectView);//Process data from the edit form, and display the user show page
@@ -109,8 +109,9 @@ router.put("/courses/:id/update", coursesController.update, coursesController.re
 router.get("/courses/:id", coursesController.show, coursesController.showView);
 
 // router.get("/courses", homeController.showCourses);
+router.get("/contact", homeController.getSubscriptionPage);
 
-// router.get("/contact", subscribersController.getSubscriptionPage);
+// router.get("/contact", subscriberssController.getSubscriptionPage);
 // router.post("/subscribe", subscribersController.saveSubscriber);
 
 router.use(errorController.pageNotFoundError);
