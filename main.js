@@ -82,7 +82,7 @@ router.use(express.json());
 
 router.use(expressValidator());
 
-router.get("/", (req, res) => {res.send("Welcome to Confetti Cuisine!");});
+router.get("/", homeController.index);
 
 router.get("/users", usersController.index, usersController.indexView);
 router.get("/users/new", usersController.new);
