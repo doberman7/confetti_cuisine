@@ -32,14 +32,6 @@ router.use(expressSession({
   resave: false,//dont sen a cookie to the user if no messages are added to the session by settinig
   saveUninitialized: false
 }));//Configure express-session to use cookie-parser.
-router.use(connectFlash());//Configure your application to use connect-flash as middleware
-
-router.use((req, res, next) => {
-  res.locals.flashMessages = req.flash();//Assign flash messages to the local flashMessages variable on the response object.
-  res.locals.loggedIn = req.isAuthenticated();
-  res.locals.currentUser = req.user;
-  next();
-});
 
 mongoose.Promise = global.Promise;
 
@@ -53,15 +45,6 @@ mongoose.connect(//assign the database connection
 
 app.set("port", process.env.PORT || 3000);
 app.set("view engine", "ejs");
-
-
-
-router.use(passport.initialize());//Initialize passport.
-router.use(passport.session());//Configure passport to use sessions in Express.js.
-
-passport.use(User.createStrategy());//Configure the user’s login strategy.
-passport.serializeUser(User.serializeUser()),//Set up passport to serialize and deserialize your user data.
-passport.deserializeUser(User.deserializeUser())
 
 router.use(express.static ("public"));//“To enable static assets
 router.use(layouts);
@@ -78,6 +61,21 @@ router.use(methodOverride("_method", {//Configure the application router to use 
 router.use(express.json());
 
 router.use(expressValidator());
+
+router.use(passport.initialize());//Initialize passport.
+router.use(passport.session());//Configure passport to use sessions in Express.js.
+passport.use(User.createStrategy());//Configure the user’s login strategy.
+passport.serializeUser(User.serializeUser()),//Set up passport to serialize and deserialize your user data.
+passport.deserializeUser(User.deserializeUser())
+router.use(connectFlash());//Configure your application to use connect-flash as middleware, needs to be continuous to below lines
+
+
+router.use((req, res, next) => {
+  res.locals.loggedIn = req.isAuthenticated();//need to be below conect.flash()
+  res.locals.currentUser = req.user;
+  res.locals.flashMessages = req.flash();//Assign flash messages to the local flashMessages variable on the response object.
+  next();
+});
 
 router.get("/", homeController.index);
 

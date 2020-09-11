@@ -289,7 +289,7 @@ text-align: center;
 
   /* Buttons */
 
-  button {
+  /* button {
     margin-top: 2rem;
     padding: 10px 30px;
     font-weight: bold;
@@ -298,7 +298,7 @@ text-align: center;
     border-radius: 100px;
     background: transparent;
     transition: all 1000ms;
-  }
+  } */
 
   button:disabled {
     border-color: var(--text-color);
