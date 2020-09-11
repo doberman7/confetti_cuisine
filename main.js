@@ -87,7 +87,7 @@ router.get("/", (req, res) => {res.send("Welcome to Confetti Cuisine!");});
 router.get("/users", usersController.index, usersController.indexView);
 router.get("/users/new", usersController.new);
 router.get("/users/login",  usersController.login);
-router.post("/users/login",usersController.authenticate,usersController.redirectView);
+router.post("/users/login",usersController.authenticate);
 // router.post("/users/create", usersController.create,usersController.redirectView);
 router.post("/users/create", usersController.validate, usersController.create, usersController.redirectView);
 router.get("/users/:id/edit", usersController.edit);//Add routes to handle viewing.
