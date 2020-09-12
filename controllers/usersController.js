@@ -180,8 +180,10 @@ module.exports = {
   },
 
   logEmail: (req, res, next) =>{
-    // Add a middleware function, called logEmail, between validation and encryption.
-    console.log("body"+req.body.email);
+    // this middleware should log to console the user’s email address domain (such as gmail, yahoo, or live) and pass to the next middleware function
+    let email = req.body.email;
+    email = email.split("@");
+    console.log(email[1]);
     next();
   },
 
