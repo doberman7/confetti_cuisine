@@ -174,6 +174,13 @@ module.exports = {
         res.locals.redirect = "/users/new";//Set redirect path for the new view.
         next();
       } else {
+        // Add a middleware function, called logEmail, between validation and encryption.
+        const hello = () => console.log("req.params.email");
+        const logEmail = () =>  console.log(req.params.email);
+          // req.body.email
+
+
+
         next();//Call the next middleware function.
       }
     });

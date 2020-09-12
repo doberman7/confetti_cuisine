@@ -1,28 +1,4 @@
-<script type="text/javascript">
 
-  const strengthText = ["", "bad 💩", "ok 😐", "decent 🙂", "solid 💪"];
-
-  let strength = 0;
-  let showPassword = false;
-  let disabled = true;
-
-  let validations = []
-
-  function validatePassword(e) {
-    const password = e.target.value;
-
-    validations = [
-        (password.length > 5),
-        (password.search(/[A-Z]/) > -1),
-        (password.search(/[0-9]/) > -1),
-        (password.search(/[$&+,:;=?@#]/) > -1)
-    ]
-
-    strength = validations.reduce((acc, cur) => acc + cur, 0)
-
-  }
-
-</script>
 
 <div class ="data-form">
   <main>
@@ -46,20 +22,20 @@
 
       <div class="field">
         <input type="password" name="password" class="input" id="inputPassword"
-        placeholder="  " required>
+        placeholder="  " >
         <label for="inputPassword" class="label">Password</label>
       </div>
 
       <div class="field">
         <input type="email" name="email" class="input" id="inputEmail"
-        placeholder="  " required>
+        placeholder="  " >
         <label for="inputEmail" class="label">Email address</label>
       </div>
 
 
    <div class="field">
      <input type="text" name="zipCode" class="input" id="inputZipCode" pattern="\d*"
-     placeholder="  " required>
+     placeholder="  " >
      <label for="inputZipCode" class="label">Zip Code</label>
    </div>
 
