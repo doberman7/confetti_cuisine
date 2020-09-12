@@ -87,17 +87,17 @@ module.exports = {
   },
 
   edit: (req, res, next) => {//Add the edit action.
-  let userId = req.params.id;
-  User.findById(userId)//Use findById to locate a user in the database by their ID
-      .then(user => {
-        res.render("users/edit", {
-          user: user//?
-        });//Render the user edit page for a specific user in the database
-      })
-      .catch(error => {
-        console.log(`Error fetching user by ID: ${error.message}`);
-        next(error);
-      });
+    let userId = req.params.id;
+    User.findById(userId)//Use findById to locate a user in the database by their ID
+        .then(user => {
+          res.render("users/edit", {
+            user: user//?
+          });//Render the user edit page for a specific user in the database
+        })
+        .catch(error => {
+          console.log(`Error fetching user by ID: ${error.message}`);
+          next(error);
+        });
   },
 
   update: (req, res, next) => {//Add the update action.
@@ -129,17 +129,17 @@ module.exports = {
   },
 
   delete: (req, res, next) => {
-  let userId = req.params.id;
-  mongoose.set('useFindAndModify', false);//this turn off depraction warning
-  User.findByIdAndRemove(userId)
-      .then(() => {
-        res.locals.redirect = "/users";
-        next();
-      })
-      .catch(error => {
-        console.log(`Error deleting user by ID: ${error.message}`);
-        next();
-      });
+    let userId = req.params.id;
+    mongoose.set('useFindAndModify', false);//this turn off depraction warning
+    User.findByIdAndRemove(userId)
+        .then(() => {
+          res.locals.redirect = "/users";
+          next();
+        })
+        .catch(error => {
+          console.log(`Error deleting user by ID: ${error.message}`);
+          next();
+        });
   },
 
   login: (req, res) => {//Add the login action
