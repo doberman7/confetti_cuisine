@@ -79,15 +79,6 @@ router.use((req, res, next) => {//With this middleware function, I have access t
 
 router.get("/", homeController.index);
 
-
-
-router.get("/courses", coursesController.index, coursesController.indexView);
-router.get("/courses/new", coursesController.new);
-router.post("/courses/create", coursesController.create, coursesController.redirectView);
-router.get("/courses/:id/edit", coursesController.edit);
-router.put("/courses/:id/update", coursesController.update, coursesController.redirectView);
-router.get("/courses/:id", coursesController.show, coursesController.showView);
-
 // router.get("/courses", homeController.showCourses);
 router.get("/contact", homeController.getSubscriptionPage);
 
