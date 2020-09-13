@@ -4,13 +4,13 @@ const express = require("express"),
   app = express(),
   // router = express.Router(),
   router = require("./routes/index"),
-  homeController = require("./controllers/homeController"),
-  errorController = require("./controllers/errorController.js"),
+  // homeController = require("./controllers/homeController"),
+  // errorController = require("./controllers/errorController.js"),
   layouts = require("express-ejs-layouts"),
   Subscriber = require("./models/subscriber"),
-  subscribersController = require("./controllers/subscribersController"),
-  usersController = require("./controllers/usersController"),
-  coursesController = require("./controllers/coursesController"),
+  // subscribersController = require("./controllers/subscribersController"),
+  // usersController = require("./controllers/usersController"),
+  // coursesController = require("./controllers/coursesController"),
   mongoose = require("mongoose"),
   methodOverride = require("method-override"),//Require the method-override module
   expressSession = require("express-session"),
@@ -78,14 +78,13 @@ router.use((req, res, next) => {//With this middleware function, I have access t
   next();
 });
 
+// may I should coment next 3 lines
 router.get("/", homeController.index);
-
 // router.get("/courses", homeController.showCourses);
 router.get("/contact", homeController.getSubscriptionPage);
 
 
-app.use("/", router);
-
+app.use("/", router);//if you want the router middleware to be part of the main application’s middleware flow, you need to add it with app.use.
 
 app.listen(app.get("port"), () => {
   chalkAnimation.rainbow("-".repeat(8)+
