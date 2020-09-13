@@ -83,9 +83,6 @@ router.get("/", homeController.index);
 router.get("/contact", homeController.getSubscriptionPage);
 
 
-router.use(errorController.pageNotFoundError);
-router.use(errorController.internalServerError);
-
 app.use("/", router);
 
 
