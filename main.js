@@ -70,9 +70,9 @@ passport.deserializeUser(User.deserializeUser())
 router.use(connectFlash());//Configure your application to use connect-flash as middleware, needs to be continuous to below lines
 
 
-router.use((req, res, next) => {
-  res.locals.loggedIn = req.isAuthenticated();//need to be below conect.flash()
-  res.locals.currentUser = req.user;
+router.use((req, res, next) => {//With this middleware function, I have access to loggedIn to determine whether an account is logged in via the client from which the request was sent.
+  res.locals.loggedIn = req.isAuthenticated();//need to be below conect.flash(), isAuthenticated tells me whether there’s an active session for a user
+  res.locals.currentUser = req.user;//currentUser is set to the user who’s logged in if that user exists.
   res.locals.flashMessages = req.flash();//Assign flash messages to the local flashMessages variable on the response object.
   next();
 });
