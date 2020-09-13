@@ -78,10 +78,7 @@ router.use((req, res, next) => {//With this middleware function, I have access t
   next();
 });
 
-// may I should coment next 3 lines
-router.get("/", homeController.index);
-// router.get("/courses", homeController.showCourses);
-router.get("/contact", homeController.getSubscriptionPage);
+
 
 
 app.use("/", router);//if you want the router middleware to be part of the main application’s middleware flow, you need to add it with app.use.

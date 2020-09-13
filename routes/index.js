@@ -1,4 +1,4 @@
-const router = require("express").Router(),             
+const router = require("express").Router(),
   userRoutes = require("./userRoutes"),//2 Require all the route modules within the same directory.
   subscriberRoutes = require("./subscriberRoutes"),
   courseRoutes = require("./courseRoutes"),
@@ -10,5 +10,7 @@ router.use("/subscribers", subscriberRoutes);
 router.use("/courses", courseRoutes);
 router.use("/", homeRoutes);
 router.use("/", errorRoutes);
+
+
 
 module.exports = router;//Export the router from index.js.
