@@ -2,7 +2,8 @@
 
 const express = require("express"),
   app = express(),
-  router = express.Router(),
+  // router = express.Router(),
+  router = require("./routes/index"),
   homeController = require("./controllers/homeController"),
   errorController = require("./controllers/errorController.js"),
   layouts = require("express-ejs-layouts"),
