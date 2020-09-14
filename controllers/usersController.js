@@ -100,18 +100,10 @@ module.exports = {
   },
 
   update: (req, res, next) => {//Add the update action.
+    chalkAnimation.neon("update");
     mongoose.set('useFindAndModify', false);//this turn off depraction warning
-    console.log("update")
     let userId = req.params.id,
-      userParams = {
-        name: {
-          first: req.body.first,
-          last: req.body.last
-        },
-        email: req.body.email,
-        password: req.body.password,
-        zipCode: req.body.zipCode
-      };//Collect user parameters from reques
+      userParams = getUserParams(req.body);
 
     User.findByIdAndUpdate(userId, {
       $set: userParams
