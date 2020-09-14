@@ -4,7 +4,7 @@ const Course = require("../models/course"),
   chalkAnimation = require('chalk-animation'),
   mongoose = require("mongoose"),
   getCourseParams = body => {
-    chalkAnimation.radar('chalk-animation');
+    // chalkAnimation.radar('chalk-animation');
 
     return {
       title: body.title,
@@ -77,6 +77,7 @@ module.exports = {
 
   edit: (req, res, next) => {
     let courseId = req.params.id;
+    chalkAnimation.radar(courseId);
     Course.findById(courseId)
       .then(course => {
         res.render("courses/edit", {

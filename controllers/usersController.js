@@ -128,6 +128,7 @@ module.exports = {
   },
 
   delete: (req, res, next) => {
+    chalkAnimation.glitch("delete");
     let userId = req.params.id;
     mongoose.set('useFindAndModify', false);//this turn off depraction warning
     User.findByIdAndRemove(userId)

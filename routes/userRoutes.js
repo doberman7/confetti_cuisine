@@ -15,7 +15,7 @@ router.post(
   usersController.create,
   usersController.redirectView);
 router.get("/:id/edit", usersController.edit);//Add routes to handle viewing.
-router.put("/users/:id/update", usersController.update, usersController.redirectView);//Process data from the edit form, and display the user show page
+router.put("/:id/update", usersController.update, usersController.redirectView);//Process data from the edit form, and display the user show page
 router.delete ("/:id/delete", usersController.delete, usersController.redirectView);
 router.get("/:id", usersController.show, usersController.showView);
 
