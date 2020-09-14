@@ -37,8 +37,7 @@ module.exports = {
   },
 
   create: (req, res, next) => {
-    chalkAnimation.radar('chalk-animation');
-
+    chalkAnimation.radar('createCourse');
     let courseParams = getCourseParams(req.body);
     Course.create(courseParams)
       .then(course => {
@@ -59,6 +58,7 @@ module.exports = {
   },
 
   show: (req, res, next) => {
+    chalkAnimation.glitch("course show");
     let courseId = req.params.id;
     Course.findById(courseId)
       .then(course => {
@@ -72,12 +72,13 @@ module.exports = {
   },
 
   showView: (req, res) => {
+    chalkAnimation.pulse("course showView");
     res.render("courses/show");
   },
 
   edit: (req, res, next) => {
+    chalkAnimation.neon("editCourse")
     let courseId = req.params.id;
-    chalkAnimation.radar(courseId);
     Course.findById(courseId)
       .then(course => {
         res.render("courses/edit", {
@@ -91,13 +92,9 @@ module.exports = {
   },
 
   update: (req, res, next) => {
+    chalkAnimation.karaoke("course update")
     let courseId = req.params.id,
-      courseParams = {
-        title: req.body.title,
-        description: req.body.description,
-        items: [req.body.items.split(",")],
-        zipCode: req.body.zipCode
-      };
+      courseParams = getCourseParams(req.body);
     mongoose.set('useFindAndModify', false);//this turn off depraction warning
     Course.findByIdAndUpdate(courseId, {
       $set: courseParams
