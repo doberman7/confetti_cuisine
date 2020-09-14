@@ -1,8 +1,11 @@
 "use strict";
 
 const Course = require("../models/course"),
+  chalkAnimation = require('chalk-animation'),
   mongoose = require("mongoose"),
   getCourseParams = body => {
+    chalkAnimation.radar('chalk-animation');
+
     return {
       title: body.title,
       description: body.description,
@@ -34,6 +37,8 @@ module.exports = {
   },
 
   create: (req, res, next) => {
+    chalkAnimation.radar('chalk-animation');
+
     let courseParams = getCourseParams(req.body);
     Course.create(courseParams)
       .then(course => {

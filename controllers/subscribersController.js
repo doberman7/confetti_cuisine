@@ -1,4 +1,5 @@
 const Subscriber = require("../models/subscriber"),
+  chalkAnimation = require('chalk-animation'),
   getSubscriberParams = (body) => {
     return {
       name: body.name,
@@ -35,7 +36,7 @@ module.exports = {
     },
 
     create: (req, res, next) => {//Add the create action to save the subscriber to the database.
-        let subscriberParams = getSubscriberParams(req.body);
+      let subscriberParams = getSubscriberParams(req.body);
       Subscriber.create(subscriberParams)//Create subscribers with form parameters
         .then(subscriber => {
           req.flash("success", `${subscriber.name}'s account created successfully!`);//Respond with a success flash message.

@@ -7,7 +7,7 @@ const express = require("express"),
   // homeController = require("./controllers/homeController"),
   // errorController = require("./controllers/errorController.js"),
   layouts = require("express-ejs-layouts"),
-  Subscriber = require("./models/subscriber"),
+  // Subscriber = require("./models/subscriber"),
   // subscribersController = require("./controllers/subscribersController"),
   // usersController = require("./controllers/usersController"),
   // coursesController = require("./controllers/coursesController"),
@@ -24,15 +24,7 @@ const express = require("express"),
   chalkAnimation = require('chalk-animation');
 
 
-router.use(cookieParser("secret_passcode"));// Configure your Express.js application to use cookie-parser as middleware
-router.use(expressSession({
-  secret: "secret_passcode",
-  cookie: {
-    maxAge: 4000000
-  },
-  resave: false,//dont sen a cookie to the user if no messages are added to the session by settinig
-  saveUninitialized: false
-}));//Configure express-session to use cookie-parser.
+
 
 mongoose.Promise = global.Promise;
 
@@ -47,39 +39,46 @@ mongoose.connect(//assign the database connection
 app.set("port", process.env.PORT || 3000);
 app.set("view engine", "ejs");
 
-router.use(express.static ("public"));//“To enable static assets
-router.use(layouts);
-router.use(
+app.use(express.static ("public"));//“To enable static assets
+app.use(layouts);
+app.use(
   express.urlencoded({//tell Express.js app to use body-parser for processing URL encoded and JSON parameters
     extended: false
   })
 );
 
-router.use(methodOverride("_method", {//Configure the application router to use methodOverride as middleware
+app.use(methodOverride("_method", {//Configure the application app to use methodOverride as middleware
   methods: ["POST", "GET", "PUT"]
 }));
 
-router.use(express.json());
+app.use(express.json());
+app.use(cookieParser("secret_passcode"));// Configure your Express.js application to use cookie-parser as middleware
+app.use(expressSession({
+  secret: "secret_passcode",
+  cookie: {
+    maxAge: 4000000
+  },
+  resave: false,//dont sen a cookie to the user if no messages are added to the session by settinig
+  saveUninitialized: false
+}));//Configure express-session to use cookie-parser.
 
-router.use(expressValidator());
 
-router.use(passport.initialize());//Initialize passport.
-router.use(passport.session());//Configure passport to use sessions in Express.js.
+app.use(passport.initialize());//Initialize passport.
+app.use(passport.session());//Configure passport to use sessions in Express.js.
 passport.use(User.createStrategy());//Configure the user’s login strategy.
 passport.serializeUser(User.serializeUser()),//Set up passport to serialize and deserialize your user data.
 passport.deserializeUser(User.deserializeUser())
-router.use(connectFlash());//Configure your application to use connect-flash as middleware, needs to be continuous to below lines
+app.use(connectFlash());//Configure your application to use connect-flash as middleware, needs to be continuous to below lines
 
 
-router.use((req, res, next) => {//With this middleware function, I have access to loggedIn to determine whether an account is logged in via the client from which the request was sent.
+app.use((req, res, next) => {//With this middleware function, I have access to loggedIn to determine whether an account is logged in via the client from which the request was sent.
   res.locals.loggedIn = req.isAuthenticated();//need to be below conect.flash(), isAuthenticated tells me whether there’s an active session for a user
   res.locals.currentUser = req.user;//currentUser is set to the user who’s logged in if that user exists.
   res.locals.flashMessages = req.flash();//Assign flash messages to the local flashMessages variable on the response object.
   next();
 });
 
-
-
+app.use(expressValidator());
 
 app.use("/", router);//if you want the router middleware to be part of the main application’s middleware flow, you need to add it with app.use.
 
