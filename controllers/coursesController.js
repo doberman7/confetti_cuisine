@@ -110,6 +110,21 @@ module.exports = {
       });
   },
 
+  delete: (req, res, next) => {
+    chalkAnimation.neon("delete course");
+    let courseId = req.params.id;
+    mongoose.set('useFindAndModify', false);
+    Course.findByIdAndRemove(courseId)
+      .then(() =>{
+        res.locals.redirect = "/courses";
+        next();
+      })
+      .catch(error=>{
+        console.log(`Error deleting user by ID: ${error.message}`);
+        next();
+      });
+  },
+
   redirectView: (req, res, next) => {
     let redirectPath = res.locals.redirect;
     if (redirectPath !== undefined) res.redirect(redirectPath);

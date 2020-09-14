@@ -24,6 +24,10 @@
           Edit
         </a>
       </td>
+      <td>
+        <a href="<%= `courses/${course._id}/delete?_method=DELETE` %>"
+       onclick="return confirm('Are you sure you want to delete this record?')">Delete</a>
+      </td>
     </tr>
     <% }); %>
   </tbody>
