@@ -99,9 +99,10 @@ module.exports = {
     },
 
     update: (req, res, next) => {//Add the update action.
+      chalkAnimation.neon("subscriber update");
       mongoose.set('useFindAndModify', false);//this turn off depraction warning
       let subscriberParams = getSubscriberParams(req.body);//Collect subscriber parameters from reques
-
+      let subscriberId = req.params.id;
       Subscriber.findByIdAndUpdate(subscriberId, {
         $set: subscriberParams
       })//Use findByIdAndUpdate to locate a subscriber by ID and update the document record in one command.
@@ -117,6 +118,7 @@ module.exports = {
     },
 
     delete: (req, res, next) => {
+    chalkAnimation.neon("subscriber delete")
     let subscriberId = req.params.id;
     mongoose.set('useFindAndModify', false);//this turn off depraction warning
     Subscriber.findByIdAndRemove(subscriberId)
