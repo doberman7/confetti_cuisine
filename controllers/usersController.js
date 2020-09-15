@@ -30,7 +30,11 @@ module.exports = {
   },
 
   indexView: (req, res) => {
-    res.render("users/index");
+    if (req.query.format === "json") {
+        res.json(res.locals.courses);//Respond with JSON if the format query param equals json.
+    } else {
+        res.render("courses/index");//Respond with an EJS view if the format query param doesn’t equal json.
+    }
   },
 
   new: (req, res) => {//Add the new action to render a form  NOT WORKING
