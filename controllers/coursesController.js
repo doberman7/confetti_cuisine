@@ -41,7 +41,7 @@ module.exports = {
   },
 
   create: (req, res, next) => {
-    chalkAnimation.radar('createCourse');
+    chalkAnimation.neon('createCourse');
     let courseParams = getCourseParams(req.body);
     Course.create(courseParams)
       .then(course => {
