@@ -137,5 +137,31 @@ module.exports = {
     let redirectPath = res.locals.redirect;
     if (redirectPath !== undefined) res.redirect(redirectPath);
     else next();
-  }
+  },
+
+  respondJSON: (req, res) => {//Handle the request from previous middleware, and submit response.
+    res.json({
+      status: httpStatus.OK,
+      data: res.locals
+    });//Respond with the response’s local data in JSON format
+  },
+
+  errorJSON: (error, req, res, next) => {//Respond with a 500 status code and error message in JSON format.
+    let errorObject;
+
+    if (error) {
+      errorObject = {
+        status: httpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message
+      };
+    } else {
+      errorObject = {
+        status: httpStatus.INTERNAL_SERVER_ERROR,
+        message: "Unknown Error."
+      };
+    }
+
+    res.json(errorObject);
+  },
+
 };

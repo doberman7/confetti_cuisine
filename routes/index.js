@@ -3,11 +3,13 @@ const router = require("express").Router(),
   subscriberRoutes = require("./subscriberRoutes"),
   courseRoutes = require("./courseRoutes"),
   errorRoutes = require("./errorRoutes"),
-  homeRoutes = require("./homeRoutes");
+  homeRoutes = require("./homeRoutes"),
+  apiRoutes = require("./apiRoutes");
 
 router.use("/users", userRoutes);//Use the routes from the relative route modules with namespaces.
 router.use("/subscribers", subscriberRoutes);
 router.use("/courses", courseRoutes);
+router.use("/api", apiRoutes);//his module will contain all the API routes with JSON response bodies
 router.use("/", homeRoutes);
 router.use("/", errorRoutes);
 
