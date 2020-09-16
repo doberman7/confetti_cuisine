@@ -3,6 +3,7 @@
 const Course = require("../models/course"),
   chalkAnimation = require('chalk-animation'),
   mongoose = require("mongoose"),
+  httpStatus = require("http-status-codes"),
   getCourseParams = body => {
     // chalkAnimation.radar('chalk-animation');
 
@@ -148,6 +149,7 @@ module.exports = {
 
   errorJSON: (error, req, res, next) => {//Respond with a 500 status code and error message in JSON format.
     let errorObject;
+    chalkAnimation.neon("errorJson");
 
     if (error) {
       errorObject = {
