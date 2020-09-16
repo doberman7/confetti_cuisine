@@ -30,7 +30,14 @@ module.exports = {
   },
 
   indexView: (req, res) => {
-    res.render("users/index");
+    if (req.query.format === "json") {
+      // chalkAnimation.neon("json res")
+        res.json(res.locals.users);//Respond with JSON if the format query param equals json
+        // console.log(res.locals.users)
+      } else {
+        // chalkAnimation.karaoke("no json res")
+        res.render("users/index");//Respond with an EJS view if the format query param doesn’t equal json.
+      }
   },
 
   new: (req, res) => {//Add the new action to render a form  NOT WORKING

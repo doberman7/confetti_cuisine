@@ -17,3 +17,24 @@ $(document).ready(() => {//Wait for DOM to load.
     });
   });
 });
+
+$(document).ready(() => {
+  $("#modal-button-user").click(() => {
+    $(".modal-body").html('');
+    $.get("/users?format=json", (data) => {
+      data.forEach((user) => {
+        $(".modal-body").append(
+          `<div>
+                <span class="course-title">
+                ${user.name.first + " " + user.name.last}
+                </span>
+                <div class="course-description">
+                ${user.email}
+                </div>
+
+          </div>`
+        );
+      });
+    });
+  });
+});

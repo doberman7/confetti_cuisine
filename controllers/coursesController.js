@@ -31,8 +31,12 @@ module.exports = {
   indexView: (req, res) => {
     if (req.query.format === "json") {
         res.json(res.locals.courses);//Respond with JSON if the format query param equals json
+        chalkAnimation.neon("json res course")
+
       } else {
         res.render("courses/index");//Respond with an EJS view if the format query param doesn’t equal json.
+        chalkAnimation.karaoke("no json res courses")
+
       }
   },
 
