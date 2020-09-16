@@ -30,15 +30,15 @@ module.exports = {
   },
 
   indexView: (req, res) => {
-    if (req.query.format === "json") {
-        let ServerResponse = res.json(res.locals.courses);//Respond with JSON if the format query param equals json
-        console.log(ServerResponse);
-        chalkAnimation.neon("json ServerResponse course")
-
-      } else {
-        let er = res.render("courses/index");//Respond with an EJS view if the format query param doesn’t equal json.
-        chalkAnimation.karaoke("error json res courses")
-      }
+    // // if (req.query.format === "json") {
+    // let ServerResponse = res.json(res.locals.courses);//Respond with JSON if the format query param equals json
+    //    console.log(ServerResponse);
+       chalkAnimation.neon(" ServerResponse course")
+    //
+    //   } else {
+       res.render("courses/index");//Respond with an EJS view if the format query param doesn’t equal json.
+    //     chalkAnimation.karaoke("error json res courses")
+    //   }
   },
 
   new: (req, res) => {
