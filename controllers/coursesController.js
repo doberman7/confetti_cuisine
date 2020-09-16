@@ -31,13 +31,13 @@ module.exports = {
 
   indexView: (req, res) => {
     if (req.query.format === "json") {
-        res.json(res.locals.courses);//Respond with JSON if the format query param equals json
-        chalkAnimation.neon("json res course")
+        let ServerResponse = res.json(res.locals.courses);//Respond with JSON if the format query param equals json
+        console.log(ServerResponse);
+        chalkAnimation.neon("json ServerResponse course")
 
       } else {
-        res.render("courses/index");//Respond with an EJS view if the format query param doesn’t equal json.
-        chalkAnimation.karaoke("no json res courses")
-
+        let er = res.render("courses/index");//Respond with an EJS view if the format query param doesn’t equal json.
+        chalkAnimation.karaoke("error json res courses")
       }
   },
 
@@ -149,7 +149,7 @@ module.exports = {
 
   errorJSON: (error, req, res, next) => {//Respond with a 500 status code and error message in JSON format.
     let errorObject;
-    chalkAnimation.neon("errorJson");
+    // chalkAnimation.neon("errorJson");
 
     if (error) {
       errorObject = {
