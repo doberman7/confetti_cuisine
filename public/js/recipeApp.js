@@ -5,12 +5,12 @@ $(document).ready(() => {//Wait for DOM to load.
       data.forEach((course) => { //Loop through array of data in the response.
         $(".modal-body").append(
           `<div>
-          <span class="course-title">
-          ${course.title}
-          </span>
-          <div class="course-description">
-          ${course.description}
-          </div>
+            <span class="course-title">
+              ${course.title}
+            </span>
+            <div class="course-description">
+              ${course.description}
+            </div>
           </div>`//Append each course to the modal.
         );
       });
@@ -21,15 +21,15 @@ $(document).ready(() => {//Wait for DOM to load.
 $(document).ready(() => {
   $("#modal-button-user").click(() => {
     $(".modal-body").html('');
-    $.get("/users?format=json", (data) => {
+    $.get("/users?format=json", (data) => {//Request data from /users?format=json asynchronously.
       data.forEach((user) => {
         $(".modal-body").append(
           `<div>
-                <span class="course-title">
-                ${user.name.first + " " + user.name.last}
+                <span class="user-name">
+                  ${user.name.first + " " + user.name.last}
                 </span>
-                <div class="course-description">
-                ${user.email}
+                <div class="user-email">
+                  ${user.email}
                 </div>
 
           </div>`

@@ -167,9 +167,27 @@ button[type=submit] {
   display: inline-block;
   float: left;
 }
-
+.user-name {
+  font-family: "Baloo Bhaina";
+  color: darkslategray;
+  padding: 0 5px;
+  font-size: 20px;
+  border-radius: 10px;
+  margin-top: 10px;
+  display: inline-block;
+  float: left;
+}
 .course-description {
   /* border-bottom: 1px solid #625956; */
+  padding: 10px 10px 20px 10px;
+  text-align: left;
+  margin: 0 10px;
+  clear: left;
+}
+
+.user-email {
+  /* border-bottom: 1px solid #625956; */
+  color: darkslategrey;
   padding: 10px 10px 20px 10px;
   text-align: left;
   margin: 0 10px;
