@@ -19,9 +19,33 @@ $(document).ready(() => {//Wait for DOM to load.
           </div>`
         );
       });
+    }).then(() => {
+    addJoinButtonListener();//Call addJoinButtonListener to add an event listener on your buttons after the AJAX request completes.
     });
   });
 });
+
+let addJoinButtonListener = () => {//Create the event listener for the modal button.
+  $(".join-button").click((event) => {
+    let $button = $(event.target),
+      courseId = $button.data("id");//Grab the button and button ID data.
+  $.get(`/api/courses/${courseId}/join`, (results = {}) => {//Make an AJAX request with the course’s ID to join.
+    let data = results.data;
+    if (data && data.success) {//Check whether the join action was successful, and modify the button.
+      $button
+        .text("Joined")
+        .addClass("joined-button")
+        .removeClass("join-button");
+    } else {
+      $button.text("Try again");
+    }
+    });
+  });
+}
+
+
+
+
 
 $(document).ready(() => {
   $("#modal-button-user").click(() => {
