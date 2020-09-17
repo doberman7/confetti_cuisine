@@ -190,4 +190,20 @@ module.exports = {
     }
   },
 
+  filterUserCourses: (req, res, next) => {
+    let currentUser = res.locals.currentUser;
+    if (currentUser) {//Check whether a user is logged in.
+      let mappedCourses = res.locals.courses.map((course) => { //Modify course data to add a flag indicating user association
+        let userJoined = currentUser.courses.some((userCourse) => {
+          return userCourse.equals(course._id);//Check whether the course exists in the user’s courses array.
+        });
+        return Object.assign(course.toObject(), {joined: userJoined});
+      });
+      res.locals.courses = mappedCourses;
+      next();
+    } else {
+      next();
+    }
+  }
+
 };

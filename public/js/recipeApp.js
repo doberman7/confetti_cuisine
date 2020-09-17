@@ -9,10 +9,11 @@ $(document).ready(() => {//Wait for DOM to load.
           `<div>
             <span class="course-title">
               ${course.title}
-              <button class="join-button" data-id="${course._id}">
-                Join
-              </button>
             </span>
+
+            <button class='${course.joined ? "joined-button" : "join-button"}' data-id="${course._id}">
+                ${course.joined ? "Joined" : "Join"}
+            </button>
             <div class='course-description'>
               ${course.description}
             </div>
