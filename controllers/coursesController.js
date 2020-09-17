@@ -4,6 +4,7 @@ const Course = require("../models/course"),
   chalkAnimation = require('chalk-animation'),
   mongoose = require("mongoose"),
   httpStatus = require("http-status-codes"),
+  User = require("../models/user"),
   getCourseParams = body => {
     // chalkAnimation.radar('chalk-animation');
 
@@ -164,6 +165,28 @@ module.exports = {
     }
 
     res.json(errorObject);
+  },
+
+  join: (req, res, next) => {
+    let courseId = req.params.id,
+      currentUser = req.user;
+
+    if (currentUser) {
+      User.findByIdAndUpdate(currentUser, {
+        $addToSet: {
+          courses: courseId
+        }
+      })
+        .then(() => {
+          res.locals.success = true;
+          next();
+        })
+        .catch(error => {
+          next(error);
+        });
+    } else {
+      next(new Error("User must log in."));
+    }
   },
 
 };

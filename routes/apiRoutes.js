@@ -3,5 +3,5 @@ const router = require("express").Router(),
 
 router.get("/courses", coursesController.index, coursesController.respondJSON);//Add the API route to the Express.js Router
 router.use(coursesController.errorJSON);//Add API error-handling middleware.
-
+router.get("/courses/:id/join", coursesController.join, coursesController.respondJSON);
 module.exports = router;

@@ -46,7 +46,7 @@ let addJoinButtonListener = () => {//Create the event listener for the modal but
 
 
 
-
+//modal users
 $(document).ready(() => {
   $("#modal-button-user").click(() => {
     $(".modal-body").html('');
