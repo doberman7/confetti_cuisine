@@ -172,6 +172,7 @@ module.exports = {
       currentUser = req.user;//Get the course id and current user from the request.
 
     if (currentUser) {//Check whether a current user is logged in.
+        mongoose.set('useFindAndModify', false);
       User.findByIdAndUpdate(currentUser, {
         $addToSet: {
           courses: courseId//Update the user’s courses field to contain the targeted course.
