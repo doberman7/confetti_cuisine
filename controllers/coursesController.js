@@ -167,25 +167,25 @@ module.exports = {
     res.json(errorObject);
   },
 
-  join: (req, res, next) => {
+  join: (req, res, next) => {//Add the join action to let users join a course.
     let courseId = req.params.id,
-      currentUser = req.user;
+      currentUser = req.user;//Get the course id and current user from the request.
 
-    if (currentUser) {
+    if (currentUser) {//Check whether a current user is logged in.
       User.findByIdAndUpdate(currentUser, {
         $addToSet: {
-          courses: courseId
+          courses: courseId//Update the user’s courses field to contain the targeted course.
         }
       })
         .then(() => {
-          res.locals.success = true;
+          res.locals.success = true;//Respond with a JSON object with a success indicator.
           next();
         })
         .catch(error => {
-          next(error);
+          next(error);//Respond with a JSON object with an error indicator.
         });
     } else {
-      next(new Error("User must log in."));
+      next(new Error("User must log in."));//Pass an error through to the next middleware function.
     }
   },
 
