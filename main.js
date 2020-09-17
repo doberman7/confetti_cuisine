@@ -55,11 +55,12 @@ app.use(express.json());
 app.use(cookieParser("secret_passcode"));// Configure your Express.js application to use cookie-parser as middleware
 app.use(expressSession({
   secret: "secret_passcode",
+  resave: false,//dont sen a cookie to the user if no messages are added to the session by settinig
+  saveUninitialized: false,
   cookie: {
+    secure: false,
     maxAge: 4000000
   },
-  resave: false,//dont sen a cookie to the user if no messages are added to the session by settinig
-  saveUninitialized: false
 }));//Configure express-session to use cookie-parser.
 
 
